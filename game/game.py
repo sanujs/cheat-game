@@ -84,5 +84,3 @@ class CheatGame:
                         return not self.call_cheat(player)
                     return True
 
-game = CheatGame(3)
-game.play_game()
