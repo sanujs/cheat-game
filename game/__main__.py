@@ -1,4 +1,4 @@
-from game.game import CheatGame
+from game import CheatGame
 
 
 game = CheatGame(3)
