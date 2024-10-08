@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://bohd1wf2efcrh"]
+
+[ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://main_theme.tres" id="1_jbr47"]
+[ext_resource type="Script" path="res://scenes/card/card.gd" id="1_mnj7f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rsnb6"]
+size = Vector2(96.2413, 152)
+
+[node name="Card" type="Control"]
+custom_minimum_size = Vector2(96, 152)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1184.0
+offset_bottom = -568.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.997492, 1)
+script = ExtResource("1_mnj7f")
+
+[node name="Color" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="State" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -19.5
+offset_top = -11.5
+offset_right = 19.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_jbr47")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "card"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+scale = Vector2(1, 1)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(48.1207, 76)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_rsnb6")
