@@ -9,10 +9,18 @@ enum Rank {TWO, THREE, FOUR, JACK, QUEEN, KING, ACE}
 @export var suit: Suit = Suit.SPADES
 @export var selected: bool = false
 
+@onready var rank_lbl: Label = $RankLbl
+@onready var suit_lbl: Label = $SuitLbl
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$State.text = str(Rank.keys()[rank]) + " of " + str(Suit.keys()[suit])
+	visible = false
+
+func set_values(_rank: Rank, _suit: Suit):
+	rank = _rank
+	suit = _suit
+
+	rank_lbl.set_text(Rank.keys()[_rank])
+	suit_lbl.set_text(Suit.keys()[_suit])
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

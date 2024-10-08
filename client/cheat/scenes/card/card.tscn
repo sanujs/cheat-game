@@ -28,7 +28,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="State" type="Label" parent="."]
+[node name="RankLbl" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -36,23 +36,40 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -19.5
-offset_top = -11.5
+offset_top = -56.5
 offset_right = 19.5
-offset_bottom = 11.5
+offset_bottom = -33.5
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_jbr47")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "card"
+text = "ACE"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SuitLbl" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -19.9296
+offset_top = -23.0
+offset_right = 19.0704
+offset_bottom = 1.52588e-05
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_jbr47")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "SPADES"
 horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="Area2D" type="Area2D" parent="."]
-scale = Vector2(1, 1)
 collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(48.1207, 76)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_rsnb6")

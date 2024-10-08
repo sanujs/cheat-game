@@ -2,10 +2,21 @@
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://bohd1wf2efcrh" path="res://scenes/card/card.tscn" id="1_o6y44"]
-[ext_resource type="Script" path="res://hand.gd" id="1_qqpyt"]
+
+[sub_resource type="GDScript" id="GDScript_hjgn3"]
+script/source = "extends HBoxContainer
+
+@export var card_scene: PackedScene
+
+func _on_remove_card_pressed() -> void:
+	for card: Card in get_children():
+		if card.selected:
+			remove_child(card)
+"
 
 [node name="Main" type="Node"]
 script = ExtResource("1_2vsyr")
+card_scene = ExtResource("1_o6y44")
 
 [node name="Hand" type="HBoxContainer" parent="."]
 anchors_preset = 7
@@ -20,7 +31,7 @@ offset_bottom = -101.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
-script = ExtResource("1_qqpyt")
+script = SubResource("GDScript_hjgn3")
 card_scene = ExtResource("1_o6y44")
 
 [node name="Card" parent="Hand" instance=ExtResource("1_o6y44")]
@@ -36,11 +47,19 @@ layout_mode = 2
 rank = 4
 suit = 3
 
-[node name="Button" type="Button" parent="."]
-offset_left = 283.0
-offset_top = 520.0
-offset_right = 433.0
-offset_bottom = 620.0
+[node name="AddCard" type="Button" parent="."]
+offset_left = 493.0
+offset_top = 634.0
+offset_right = 643.0
+offset_bottom = 709.0
 text = "Add Card"
 
-[connection signal="pressed" from="Button" to="Hand" method="_on_button_pressed"]
+[node name="RemoveCard" type="Button" parent="."]
+offset_left = 647.0
+offset_top = 635.0
+offset_right = 797.0
+offset_bottom = 710.0
+text = "Remove Card"
+
+[connection signal="pressed" from="AddCard" to="." method="_on_add_card_pressed"]
+[connection signal="pressed" from="RemoveCard" to="." method="_on_remove_card_pressed"]
