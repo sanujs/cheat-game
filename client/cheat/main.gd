@@ -24,3 +24,10 @@ func _on_remove_card_pressed() -> void:
 	for card: Card in hand.get_children():
 		if card.selected:
 			hand.remove_child(card)
+
+
+func _on_line_edit_text_submitted(new_text: String) -> void:
+	var new_card: Card = card_scene.instantiate()
+	hand.add_child(new_card)
+	new_card.set_values_from_string(new_text)
+	new_card.visible = true

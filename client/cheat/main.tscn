@@ -1,18 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=3 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://bohd1wf2efcrh" path="res://scenes/card/card.tscn" id="1_o6y44"]
-
-[sub_resource type="GDScript" id="GDScript_hjgn3"]
-script/source = "extends HBoxContainer
-
-@export var card_scene: PackedScene
-
-func _on_remove_card_pressed() -> void:
-	for card: Card in get_children():
-		if card.selected:
-			remove_child(card)
-"
 
 [node name="Main" type="Node"]
 script = ExtResource("1_2vsyr")
@@ -31,8 +20,6 @@ offset_bottom = -101.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
-script = SubResource("GDScript_hjgn3")
-card_scene = ExtResource("1_o6y44")
 
 [node name="Card" parent="Hand" instance=ExtResource("1_o6y44")]
 layout_mode = 2
@@ -61,5 +48,13 @@ offset_right = 797.0
 offset_bottom = 710.0
 text = "Remove Card"
 
+[node name="LineEdit" type="LineEdit" parent="."]
+offset_left = 493.0
+offset_top = 389.0
+offset_right = 793.0
+offset_bottom = 420.0
+placeholder_text = "Input your two character card"
+
 [connection signal="pressed" from="AddCard" to="." method="_on_add_card_pressed"]
 [connection signal="pressed" from="RemoveCard" to="." method="_on_remove_card_pressed"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
