@@ -1,9 +1,9 @@
-from action import Action, Play
-from deck.card import Card
+from game.action import Action, Play
+from game.deck.card import Card
 from typing import Optional
 
-from deck.rank import Rank
-from deck.utils import strings_to_cards
+from game.deck.rank import Rank
+from game.deck.utils import strings_to_cards
 
 
 class Player:

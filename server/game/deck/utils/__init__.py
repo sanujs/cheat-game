@@ -1,4 +1,4 @@
-from deck.card import Card
+from game.deck.card import Card
 
 def strings_to_cards(strings: list[str]) -> list[Card]:
     cards: list[Card] = []

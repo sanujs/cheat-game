@@ -1,5 +1,5 @@
-from deck.rank import Rank
-from deck.suit import Suit
+from game.deck.rank import Rank
+from game.deck.suit import Suit
 
 class Card:
     def __init__(self, rank: Rank, suit: Suit):

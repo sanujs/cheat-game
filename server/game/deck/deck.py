@@ -1,6 +1,6 @@
-from deck.card import Card
-from deck.rank import Rank
-from deck.suit import Suit
+from game.deck.card import Card
+from game.deck.rank import Rank
+from game.deck.suit import Suit
 import random
 
 class Deck:

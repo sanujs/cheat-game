@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
-from deck.card import Card
-from deck.rank import Rank
+from game.deck.card import Card
+from game.deck.rank import Rank
 
 class Play:
     def __init__(self, cards: list[Card], player_name: str, rank: Rank) -> None:

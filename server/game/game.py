@@ -1,8 +1,8 @@
 from itertools import cycle, islice
-from action import Action, Play
-from deck.deck import Deck, Card
-from deck.rank import Rank
-from player import Player
+from game.action import Action, Play
+from game.deck.deck import Deck, Card
+from game.deck.rank import Rank
+from game.player import Player
 
 
 class CheatGame:
@@ -23,6 +23,12 @@ class CheatGame:
         self.last_play: Play = None
         # TODO: Make starting player random
         self.starting_player: Player = self.players["Player 1"]
+        self.current_turn_player: Player = self.starting_player
+        self.player_iterable = islice(cycle(self.players.values()), list(self.players.values()).index(self.starting_player), None)
+
+    def next_turn(self) -> Player:
+        self.current_turn_player = next(self.player_iterable)
+        return self.current_turn_player
 
     def play_game(self) -> None:
         while not self.play_round():
