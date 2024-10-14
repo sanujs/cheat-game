@@ -55,27 +55,53 @@ offset_right = 793.0
 offset_bottom = 420.0
 placeholder_text = "Input your two character card"
 
-[node name="NewGame" type="Button" parent="."]
+[node name="LobbyUI" type="CanvasLayer" parent="."]
+
+[node name="NewGame" type="Button" parent="LobbyUI"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -75.0
-offset_top = 192.0
+offset_top = 119.0
 offset_right = 75.0
-offset_bottom = 242.0
+offset_bottom = 169.0
 grow_horizontal = 2
+size_flags_horizontal = 4
 text = "Create Lobby
 "
 
-[node name="JoinGame" type="LineEdit" parent="."]
-offset_left = 496.0
-offset_top = 264.0
-offset_right = 796.0
-offset_bottom = 295.0
-placeholder_text = "Input your join code"
+[node name="JoinGame" type="LineEdit" parent="LobbyUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -141.5
+offset_right = 150.0
+offset_bottom = -110.5
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Or input your join code"
+
+[node name="StartGame" type="Button" parent="LobbyUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -56.0
+offset_right = 75.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start Game
+"
 
 [connection signal="pressed" from="AddCard" to="." method="_on_add_card_pressed"]
 [connection signal="pressed" from="RemoveCard" to="." method="_on_remove_card_pressed"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
-[connection signal="pressed" from="NewGame" to="." method="_on_new_game_pressed"]
-[connection signal="text_submitted" from="JoinGame" to="." method="_on_join_game_text_submitted"]
+[connection signal="pressed" from="LobbyUI/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="text_submitted" from="LobbyUI/JoinGame" to="." method="_on_join_game_text_submitted"]
+[connection signal="pressed" from="LobbyUI/StartGame" to="." method="_on_start_game_pressed"]

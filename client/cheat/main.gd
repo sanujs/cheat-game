@@ -3,14 +3,16 @@ extends Node
 @export var websocket_url = "ws://localhost:8001/"
 @export var card_scene: PackedScene
 @onready var hand = $Hand
+@onready var startGameBtn = $LobbyUI/StartGame
+@onready var newGameBtn = $LobbyUI/NewGame
+@onready var joinGameBtn = $LobbyUI/JoinGame
 
 var socket = WebSocketPeer.new()
 var connected = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
-
+	startGameBtn.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -23,7 +25,13 @@ func _process(delta: float) -> void:
 				if socket.was_string_packet():
 					var pkt_string = pkt.get_string_from_utf8()
 					var json_recv = JSON.parse_string(pkt_string)
-					print(json_recv['join'])
+					print(json_recv)
+					if json_recv["type"] == "hand":
+						for hand_str in json_recv["hand"]:
+							var new_card: Card = card_scene.instantiate()
+							hand.add_child(new_card)
+							new_card.set_values_from_string(hand_str)
+							new_card.visible = true
 		elif state == WebSocketPeer.STATE_CLOSING:
 			# Keep polling to achieve proper close.
 			pass
@@ -64,11 +72,16 @@ func _on_new_game_pressed() -> void:
 	else:
 		# Wait for the socket to connect.
 		await get_tree().create_timer(1).timeout
+
+		connected = true
+		newGameBtn.visible = false
+		joinGameBtn.visible = false
 		
 		# Send data.
 		var data = {"type": "init"}
 		socket.send_text(JSON.stringify(data))
-		connected = true
+		startGameBtn.visible = true
+
 
 
 func _on_join_game_text_submitted(new_text: String) -> void:
@@ -81,6 +94,13 @@ func _on_join_game_text_submitted(new_text: String) -> void:
 		await get_tree().create_timer(1).timeout
 
 		connected = true
+		newGameBtn.visible = false
+		joinGameBtn.visible = false
 		# Send data.
 		var data = {"type": "init", "join": new_text}
 		socket.send_text(JSON.stringify(data))
+
+
+func _on_start_game_pressed() -> void:
+	var data = {"type": "start"}
+	socket.send_text(JSON.stringify(data))

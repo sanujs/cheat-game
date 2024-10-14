@@ -1,3 +1,4 @@
+import json
 from game.deck.rank import Rank
 from game.deck.suit import Suit
 
@@ -23,3 +24,6 @@ class Card:
 
     def to_str(self):
         return f"{self.rank}{self.suit}"
+
+    def toJSON(self):
+        return json.dumps(self.to_str())

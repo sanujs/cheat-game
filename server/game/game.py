@@ -3,16 +3,16 @@ from game.action import Action, Play
 from game.deck.deck import Deck, Card
 from game.deck.rank import Rank
 from game.player import Player
+from websockets.asyncio.server import ServerConnection
+from uuid import uuid4
+from random import choice
 
 
 class CheatGame:
-    def __init__(self, num_players: int):
+    def __init__(self):
         self.deck = Deck()
         self.deck.shuffle()
         self.players: dict[str, Player] = {}
-        for i in range(num_players):
-            name = f"Player {i}"
-            self.players[name] = Player(name, self.deck.deal(52//num_players))
 
         self.active_pile: list[Card] = []
         self.out_pile: list[Card] = []
@@ -22,9 +22,21 @@ class CheatGame:
 
         self.last_play: Play = None
         # TODO: Make starting player random
-        self.starting_player: Player = self.players["Player 1"]
-        self.current_turn_player: Player = self.starting_player
+        self.starting_player: Player = None
+        self.current_turn_player: Player = None
+
+    def start_game(self) -> None:
+        num_players = len(self.players)
+        self.starting_player = choice(list(self.players.values()))
+        for player in self.players.values():
+            # self.players = Player(name, self.deck.deal(52//num_players))
+            player.hand = self.deck.deal(52//num_players)
         self.player_iterable = islice(cycle(self.players.values()), list(self.players.values()).index(self.starting_player), None)
+
+    def create_player(self, connection: ServerConnection) -> Player:
+        uuid = uuid4()
+        self.players[uuid] = Player(uuid, connection)
+        return self.players[uuid]
 
     def next_turn(self) -> Player:
         self.current_turn_player = next(self.player_iterable)

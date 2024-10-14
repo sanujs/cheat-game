@@ -1,15 +1,27 @@
 import asyncio
 import json
-from websockets.asyncio.server import serve, ServerConnection
+from websockets.asyncio.server import serve, ServerConnection, broadcast
 import secrets
 
 from game.game import CheatGame
+from game.player import Player
 
 JOIN = {}
 
 
+async def play(websocket: ServerConnection, game: CheatGame, player: Player):
+    game.start_game()
+    hand = player.hand_to_str()
+    event = {"type": "hand", "hand": hand}
+    await websocket.send(json.dumps(event))
+    async for message in websocket:
+        event = json.loads(message)
+
+
+
 async def start(websocket: ServerConnection):
-    game = CheatGame(2)
+    game = CheatGame()
+    cur_player = game.create_player(websocket)
     connected = {websocket}
     join_key = secrets.token_urlsafe(4)
     JOIN[join_key] = game, connected
@@ -20,19 +32,20 @@ async def start(websocket: ServerConnection):
         event = {
             "type": "init",
             "join": join_key,
+            # "uuid": str(cur_player.uuid)
         }
         await websocket.send(json.dumps(event))
-        # Temporary - for testing.
-        print("first player started game", id(game))
-        async for message in websocket:
-            print("first player sent", message)
-
+        message = await websocket.recv()
+        event = json.loads(message)
+        assert event["type"] == "start"
+        start_broadcast = {"type": "start"}
+        broadcast(connected, json.dumps(start_broadcast))
+        await play(websocket, game, cur_player)
     finally:
         del JOIN[join_key]
 
 
-async def join(websocket, join_key):
-    # Find the Connect Four game.
+async def join(websocket: ServerConnection, join_key):
     try:
         game, connected = JOIN[join_key]
     except KeyError:
@@ -41,13 +54,16 @@ async def join(websocket, join_key):
 
     # Register to receive moves from this game.
     connected.add(websocket)
+    cur_player: Player = game.create_player(websocket)
+    event = {
+        "type": "init",
+        # "uuid": str(cur_player.uuid)
+    }
+    await websocket.send(json.dumps(event))
     try:
-
-        # Temporary - for testing.
-        print("second player joined game", id(game))
-        async for message in websocket:
-            print("second player sent", message)
-
+        message = await websocket.recv()
+        assert message["type"] == "start"
+        await play(websocket, game, cur_player)
     finally:
         connected.remove(websocket)
 
