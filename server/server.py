@@ -10,8 +10,8 @@ JOIN = {}
 
 
 async def play(websocket: ServerConnection, game: CheatGame, player: Player):
-    game.start_game()
     hand = player.hand_to_str()
+    print(hand)
     event = {"type": "hand", "hand": hand}
     await websocket.send(json.dumps(event))
     async for message in websocket:
@@ -38,8 +38,12 @@ async def start(websocket: ServerConnection):
         message = await websocket.recv()
         event = json.loads(message)
         assert event["type"] == "start"
+        game.start_game()
         start_broadcast = {"type": "start"}
         broadcast(connected, json.dumps(start_broadcast))
+        message = await websocket.recv()
+        event = json.loads(message)
+        assert event["type"] == "start"
         await play(websocket, game, cur_player)
     finally:
         del JOIN[join_key]
@@ -62,7 +66,8 @@ async def join(websocket: ServerConnection, join_key):
     await websocket.send(json.dumps(event))
     try:
         message = await websocket.recv()
-        assert message["type"] == "start"
+        event = json.loads(message)
+        assert event["type"] == "start"
         await play(websocket, game, cur_player)
     finally:
         connected.remove(websocket)

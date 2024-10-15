@@ -26,12 +26,16 @@ func _process(delta: float) -> void:
 					var pkt_string = pkt.get_string_from_utf8()
 					var json_recv = JSON.parse_string(pkt_string)
 					print(json_recv)
-					if json_recv["type"] == "hand":
-						for hand_str in json_recv["hand"]:
-							var new_card: Card = card_scene.instantiate()
-							hand.add_child(new_card)
-							new_card.set_values_from_string(hand_str)
-							new_card.visible = true
+					match json_recv["type"]:
+						"start":
+							var data = {"type": "start"}
+							socket.send_text(JSON.stringify(data))
+						"hand":
+							for hand_str in json_recv["hand"]:
+								var new_card: Card = card_scene.instantiate()
+								hand.add_child(new_card)
+								new_card.set_values_from_string(hand_str)
+								new_card.visible = true
 		elif state == WebSocketPeer.STATE_CLOSING:
 			# Keep polling to achieve proper close.
 			pass

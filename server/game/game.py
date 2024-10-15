@@ -21,7 +21,6 @@ class CheatGame:
             self.discard_pile = self.deck.deal(remaining_cards)
 
         self.last_play: Play = None
-        # TODO: Make starting player random
         self.starting_player: Player = None
         self.current_turn_player: Player = None
 
@@ -29,7 +28,6 @@ class CheatGame:
         num_players = len(self.players)
         self.starting_player = choice(list(self.players.values()))
         for player in self.players.values():
-            # self.players = Player(name, self.deck.deal(52//num_players))
             player.hand = self.deck.deal(52//num_players)
         self.player_iterable = islice(cycle(self.players.values()), list(self.players.values()).index(self.starting_player), None)
 
