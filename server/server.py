@@ -40,7 +40,8 @@ async def start(websocket: ServerConnection):
 
         # Wait for host to start game
         await websocket.send(json.dumps(event))
-        print("sent join code")
+        new_player_broadcast = {"type": "players", "players": list(game.players.keys())}
+        broadcast(connected, json.dumps(new_player_broadcast))
         message = await websocket.recv()
         event = json.loads(message)
         assert event["type"] == "start"
@@ -74,9 +75,11 @@ async def join(websocket: ServerConnection, join_key):
     event = {
         "type": "init",
         "join": join_key,
-        "uuid": str(cur_player.uuid)
+        "uuid": str(cur_player.uuid),
     }
     await websocket.send(json.dumps(event))
+    new_player_broadcast = {"type": "players", "players": list(game.players.keys())}
+    broadcast(connected, json.dumps(new_player_broadcast))
     try:
         # Wait for host to start game
         message = await websocket.recv()

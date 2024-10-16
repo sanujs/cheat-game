@@ -32,7 +32,7 @@ class CheatGame:
         self.player_iterable = islice(cycle(self.players.values()), list(self.players.values()).index(self.starting_player), None)
 
     def create_player(self, connection: ServerConnection) -> Player:
-        uuid = uuid4()
+        uuid: str = str(uuid4())
         self.players[uuid] = Player(uuid, connection)
         if self.current_turn_player is None:
             self.current_turn_player = self.players[uuid]

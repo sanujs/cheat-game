@@ -38,19 +38,12 @@ layout_mode = 2
 rank = 4
 suit = 3
 
-[node name="RemoveCard" type="Button" parent="."]
+[node name="PlayCards" type="Button" parent="."]
 offset_left = 647.0
 offset_top = 634.0
 offset_right = 797.0
 offset_bottom = 709.0
-text = "Remove Card"
-
-[node name="LineEdit" type="LineEdit" parent="."]
-offset_left = 493.0
-offset_top = 389.0
-offset_right = 793.0
-offset_bottom = 420.0
-placeholder_text = "Input your two character card"
+text = "Play Cards"
 
 [node name="LobbyUI" type="CanvasLayer" parent="."]
 
@@ -87,18 +80,49 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -75.0
-offset_top = -56.0
-offset_right = 75.0
-offset_bottom = -6.0
+offset_left = 17.0
+offset_top = -53.0
+offset_right = 167.0
+offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Start Game
 "
 
+[node name="JoinCode" type="Label" parent="LobbyUI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -36.5
+offset_right = 36.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Join Code: "
+
+[node name="PlayerList" type="ItemList" parent="LobbyUI"]
+offset_left = 493.0
+offset_top = 267.0
+offset_right = 644.0
+offset_bottom = 418.0
+item_count = 5
+item_0/text = "Waiting..."
+item_0/selectable = false
+item_0/disabled = true
+item_1/text = "Waiting..."
+item_1/selectable = false
+item_1/disabled = true
+item_2/text = "Waiting..."
+item_2/selectable = false
+item_2/disabled = true
+item_3/text = "Waiting..."
+item_3/selectable = false
+item_3/disabled = true
+item_4/text = "Waiting..."
+item_4/selectable = false
+item_4/disabled = true
+
 [connection signal="message_received" from="WebSocketClient" to="." method="_on_web_socket_client_message_received"]
-[connection signal="pressed" from="RemoveCard" to="." method="_on_remove_card_pressed"]
-[connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="PlayCards" to="." method="_on_remove_card_pressed"]
 [connection signal="pressed" from="LobbyUI/NewGame" to="." method="_on_new_game_pressed"]
 [connection signal="text_submitted" from="LobbyUI/JoinGame" to="." method="_on_join_game_text_submitted"]
 [connection signal="pressed" from="LobbyUI/StartGame" to="." method="_on_start_game_pressed"]

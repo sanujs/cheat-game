@@ -6,6 +6,8 @@ extends Node
 @onready var startGameBtn = $LobbyUI/StartGame
 @onready var newGameBtn = $LobbyUI/NewGame
 @onready var joinGameBtn = $LobbyUI/JoinGame
+@onready var joinCodeLbl = $LobbyUI/JoinCode
+@onready var playerList = $LobbyUI/PlayerList
 
 var connected = false
 var uuid = ""
@@ -15,6 +17,7 @@ var your_turn = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	startGameBtn.visible = false
+	playerList.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -59,11 +62,14 @@ func _on_join_game_text_submitted(new_text: String) -> void:
 	# Send data.
 	var data = {"type": "init", "join": new_text}
 	client.send(data)
+	startGameBtn.visible = true
+	startGameBtn.disabled = true
 
 
 func _on_start_game_pressed() -> void:
 	var data = {"type": "start"}
 	client.send(data)
+	startGameBtn.visible = false
 
 
 func _on_web_socket_client_message_received(json_recv: Variant) -> void:
@@ -72,10 +78,17 @@ func _on_web_socket_client_message_received(json_recv: Variant) -> void:
 		"init":
 			uuid = json_recv["uuid"]
 			join_key = json_recv["join"]
+			joinCodeLbl.set_text("Join Code: " + join_key)
 			print(uuid)
 		"start":
 			var data = {"type": "start"}
 			client.send(data)
+			$LobbyUI.visible = false
+		"players":
+			var player_uuids = json_recv["players"]
+			for i in range(player_uuids.size()):
+				playerList.set_item_text(i, player_uuids[i])
+			playerList.visible = true
 		"hand":
 			for card_str in json_recv["hand"]:
 				str_to_card(card_str)
