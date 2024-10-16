@@ -1,11 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=4 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://bohd1wf2efcrh" path="res://scenes/card/card.tscn" id="1_o6y44"]
+[ext_resource type="Script" path="res://websocket_client.gd" id="3_hmncd"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_2vsyr")
 card_scene = ExtResource("1_o6y44")
+
+[node name="WebSocketClient" type="Node" parent="."]
+script = ExtResource("3_hmncd")
 
 [node name="Hand" type="HBoxContainer" parent="."]
 anchors_preset = 7
@@ -33,13 +37,6 @@ suit = 1
 layout_mode = 2
 rank = 4
 suit = 3
-
-[node name="AddCard" type="Button" parent="."]
-offset_left = 493.0
-offset_top = 634.0
-offset_right = 643.0
-offset_bottom = 709.0
-text = "Add Card"
 
 [node name="RemoveCard" type="Button" parent="."]
 offset_left = 647.0
@@ -99,7 +96,7 @@ grow_vertical = 2
 text = "Start Game
 "
 
-[connection signal="pressed" from="AddCard" to="." method="_on_add_card_pressed"]
+[connection signal="message_received" from="WebSocketClient" to="." method="_on_web_socket_client_message_received"]
 [connection signal="pressed" from="RemoveCard" to="." method="_on_remove_card_pressed"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="LobbyUI/NewGame" to="." method="_on_new_game_pressed"]

@@ -14,6 +14,9 @@ async def play(websocket: ServerConnection, game: CheatGame, player: Player):
     print(hand)
     event = {"type": "hand", "hand": hand}
     await websocket.send(json.dumps(event))
+    # event = {"type": "turn", "player": str(game.starting_player.uuid)}
+    if game.current_turn_player.uuid == player.uuid:
+        event = {"type": "turn", "player": str(game.current_turn_player.uuid)}
     async for message in websocket:
         event = json.loads(message)
 
@@ -23,7 +26,7 @@ async def start(websocket: ServerConnection):
     game = CheatGame()
     cur_player = game.create_player(websocket)
     connected = {websocket}
-    join_key = secrets.token_urlsafe(4)
+    join_key = secrets.token_urlsafe(2)
     JOIN[join_key] = game, connected
 
     try:
@@ -32,15 +35,24 @@ async def start(websocket: ServerConnection):
         event = {
             "type": "init",
             "join": join_key,
-            # "uuid": str(cur_player.uuid)
+            "uuid": str(cur_player.uuid)
         }
+
+        # Wait for host to start game
         await websocket.send(json.dumps(event))
+        print("sent join code")
         message = await websocket.recv()
         event = json.loads(message)
         assert event["type"] == "start"
+
+        # Initialize game and deal cards
         game.start_game()
+
+        # Broadcast the game is starting to all players
         start_broadcast = {"type": "start"}
         broadcast(connected, json.dumps(start_broadcast))
+
+        # Wait for client to acknowledge
         message = await websocket.recv()
         event = json.loads(message)
         assert event["type"] == "start"
@@ -61,10 +73,12 @@ async def join(websocket: ServerConnection, join_key):
     cur_player: Player = game.create_player(websocket)
     event = {
         "type": "init",
-        # "uuid": str(cur_player.uuid)
+        "join": join_key,
+        "uuid": str(cur_player.uuid)
     }
     await websocket.send(json.dumps(event))
     try:
+        # Wait for host to start game
         message = await websocket.recv()
         event = json.loads(message)
         assert event["type"] == "start"
@@ -83,6 +97,7 @@ async def error(websocket, message):
 
 async def handler(websocket: ServerConnection):
     # Receive and parse the "init" event from the UI.
+    print("connected")
     message = await websocket.recv()
     print(message)
     event = json.loads(message)
