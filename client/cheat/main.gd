@@ -9,6 +9,7 @@ extends Node
 @onready var joinCodeLbl = $LobbyUI/JoinCode
 @onready var playerList = $LobbyUI/PlayerList
 @onready var rankOption = $PlayUI/RankOption
+@onready var yourTurnLbl = $PlayUI/YourTurn
 
 var connected = false
 var uuid = ""
@@ -24,13 +25,15 @@ func _ready() -> void:
 	playerList.visible = false
 	$PlayUI.visible = false
 	rankOption.visible = false
+	yourTurnLbl.visible = your_turn
 	for rank in Card.Rank.keys():
 		rankOption.add_item(rank)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if your_turn != yourTurnLbl.visible:
+		yourTurnLbl.visible = your_turn
 
 
 func str_to_card(card_string: String) -> void:
@@ -98,13 +101,15 @@ func _on_web_socket_client_message_received(json_recv: Variant) -> void:
 				str_to_card(card_str)
 		"turn":
 			print(uuid + " turn")
-			assert(json_recv["player"] == uuid)
-			your_turn = true
-			if round_start:
-				rankOption.visible = true
+			if json_recv["player"] == uuid:
+				your_turn = true
+				if round_start:
+					rankOption.visible = true
 
 
 func _on_play_cards_pressed() -> void:
+	if not your_turn:
+		return
 	var played_cards = []
 	for card: Card in hand.get_children():
 		if card.selected:
@@ -120,3 +125,22 @@ func _on_play_cards_pressed() -> void:
 	client.send(data)
 	round_start = false
 	rankOption.visible = false
+	your_turn = false
+
+
+func _on_call_cheat_pressed() -> void:
+	if not your_turn:
+		return
+	var data = {
+		"type": "cheat"
+	}
+	client.send(data)
+
+
+func _on_pass_pressed() -> void:
+	if not your_turn:
+		return
+	var data = {
+		"type": "pass"
+	}
+	client.send(data)

@@ -2,6 +2,7 @@ from itertools import cycle, islice
 from game.action import Action, Play
 from game.deck.deck import Deck, Card
 from game.deck.rank import Rank
+from game.deck.utils import strings_to_cards
 from game.player import Player
 from websockets.asyncio.server import ServerConnection
 from uuid import uuid4
@@ -17,8 +18,7 @@ class CheatGame:
         self.active_pile: list[Card] = []
         self.out_pile: list[Card] = []
         self.discard_pile: list[Card] = []
-        if remaining_cards := len(self.deck.cards) > 0:
-            self.discard_pile = self.deck.deal(remaining_cards)
+
 
         self.last_play: Play = None
         self.starting_player: Player = None
@@ -29,13 +29,14 @@ class CheatGame:
         self.starting_player = choice(list(self.players.values()))
         for player in self.players.values():
             player.hand = self.deck.deal(52//num_players)
+        if remaining_cards := len(self.deck.cards) > 0:
+            self.discard_pile = self.deck.deal(remaining_cards)
         self.player_iterable = islice(cycle(self.players.values()), list(self.players.values()).index(self.starting_player), None)
+        self.next_turn()
 
     def create_player(self, connection: ServerConnection) -> Player:
         uuid: str = str(uuid4())
         self.players[uuid] = Player(uuid, connection)
-        if self.current_turn_player is None:
-            self.current_turn_player = self.players[uuid]
         return self.players[uuid]
 
     def next_turn(self) -> Player:
@@ -104,7 +105,7 @@ class CheatGame:
 
 
     def play_turn(self, player: str, cards: list[str], round_rank: Rank) -> None:
-        played_cards: list[Card] = [Card.from_str(card) for card in cards]
+        played_cards: list[Card] = strings_to_cards(cards)
         play: Play = Play(played_cards, player, round_rank)
         self.last_play = play
         self.active_pile.extend(played_cards)

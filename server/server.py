@@ -10,7 +10,7 @@ from game.player import Player
 JOIN = {}
 
 
-async def play(websocket: ServerConnection, game: CheatGame, player: Player):
+async def play(websocket: ServerConnection, game: CheatGame, player: Player, connected: set[ServerConnection]):
     hand = player.hand_to_str()
     print(hand)
     event = {"type": "hand", "hand": hand}
@@ -25,9 +25,11 @@ async def play(websocket: ServerConnection, game: CheatGame, player: Player):
         match event["type"]:
             case "play":
                 game.play_turn(player.uuid, event["cards"], Rank(event["round_rank"]))
-                from pprint import pprint
-                pprint(game.active_pile)
-
+                # TODO: broadcast to all players how many cards this player played
+                #   and possibly the current round rank
+                next_player: Player = game.next_turn()
+                event = {"type": "turn", "player": str(next_player.uuid)}
+                broadcast(connected, json.dumps(event))
 
 async def start(websocket: ServerConnection):
     game = CheatGame()
@@ -49,7 +51,7 @@ async def start(websocket: ServerConnection):
         message = await websocket.recv()
         event = json.loads(message)
         assert event["type"] == "start"
-        await play(websocket, game, cur_player)
+        await play(websocket, game, cur_player, connected)
     finally:
         del JOIN[join_key]
 
@@ -67,7 +69,7 @@ async def join(websocket: ServerConnection, join_key: str):
 
     try:
         await initialize_connection(websocket, join_key, cur_player, game, connected)
-        await play(websocket, game, cur_player)
+        await play(websocket, game, cur_player, connected)
     finally:
         connected.remove(websocket)
 
