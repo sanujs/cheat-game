@@ -11,7 +11,22 @@ card_scene = ExtResource("1_o6y44")
 [node name="WebSocketClient" type="Node" parent="."]
 script = ExtResource("3_hmncd")
 
-[node name="Hand" type="HBoxContainer" parent="."]
+[node name="PlayUI" type="CanvasLayer" parent="."]
+
+[node name="RankOption" type="OptionButton" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -193.5
+offset_top = -29.0
+offset_right = 193.5
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hand" type="HBoxContainer" parent="PlayUI"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -20,30 +35,45 @@ anchor_bottom = 1.0
 offset_left = -400.0
 offset_top = -253.0
 offset_right = 400.0
-offset_bottom = -101.0
+offset_bottom = -153.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
-[node name="Card" parent="Hand" instance=ExtResource("1_o6y44")]
+[node name="Card" parent="PlayUI/Hand" instance=ExtResource("1_o6y44")]
 layout_mode = 2
 
-[node name="Card2" parent="Hand" instance=ExtResource("1_o6y44")]
+[node name="Card2" parent="PlayUI/Hand" instance=ExtResource("1_o6y44")]
 layout_mode = 2
 rank = 3
 suit = 1
 
-[node name="Card3" parent="Hand" instance=ExtResource("1_o6y44")]
+[node name="Card3" parent="PlayUI/Hand" instance=ExtResource("1_o6y44")]
 layout_mode = 2
 rank = 4
 suit = 3
 
-[node name="PlayCards" type="Button" parent="."]
-offset_left = 647.0
+[node name="PlayCards" type="Button" parent="PlayUI"]
+offset_left = 753.0
 offset_top = 634.0
-offset_right = 797.0
+offset_right = 903.0
 offset_bottom = 709.0
 text = "Play Cards"
+
+[node name="Pass" type="Button" parent="PlayUI"]
+offset_left = 592.0
+offset_top = 634.0
+offset_right = 742.0
+offset_bottom = 709.0
+text = "Pass
+"
+
+[node name="CallCheat" type="Button" parent="PlayUI"]
+offset_left = 426.0
+offset_top = 634.0
+offset_right = 576.0
+offset_bottom = 709.0
+text = "Call Cheat"
 
 [node name="LobbyUI" type="CanvasLayer" parent="."]
 
@@ -93,9 +123,10 @@ text = "Start Game
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -36.5
-offset_right = 36.5
-offset_bottom = 23.0
+offset_left = -41.0
+offset_top = 25.0
+offset_right = 41.0
+offset_bottom = 48.0
 grow_horizontal = 2
 text = "Join Code: "
 
@@ -122,7 +153,7 @@ item_4/selectable = false
 item_4/disabled = true
 
 [connection signal="message_received" from="WebSocketClient" to="." method="_on_web_socket_client_message_received"]
-[connection signal="pressed" from="PlayCards" to="." method="_on_remove_card_pressed"]
+[connection signal="pressed" from="PlayUI/PlayCards" to="." method="_on_play_cards_pressed"]
 [connection signal="pressed" from="LobbyUI/NewGame" to="." method="_on_new_game_pressed"]
 [connection signal="text_submitted" from="LobbyUI/JoinGame" to="." method="_on_join_game_text_submitted"]
 [connection signal="pressed" from="LobbyUI/StartGame" to="." method="_on_start_game_pressed"]

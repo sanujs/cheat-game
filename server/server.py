@@ -3,6 +3,7 @@ import json
 from websockets.asyncio.server import serve, ServerConnection, broadcast
 import secrets
 
+from game.deck.rank import Rank
 from game.game import CheatGame
 from game.player import Player
 
@@ -14,37 +15,28 @@ async def play(websocket: ServerConnection, game: CheatGame, player: Player):
     print(hand)
     event = {"type": "hand", "hand": hand}
     await websocket.send(json.dumps(event))
-    # event = {"type": "turn", "player": str(game.starting_player.uuid)}
+    print(game.current_turn_player.uuid)
+    print(player.uuid)
     if game.current_turn_player.uuid == player.uuid:
         event = {"type": "turn", "player": str(game.current_turn_player.uuid)}
+        await websocket.send(json.dumps(event))
     async for message in websocket:
         event = json.loads(message)
-
+        match event["type"]:
+            case "play":
+                game.play_turn(player.uuid, event["cards"], Rank(event["round_rank"]))
+                from pprint import pprint
+                pprint(game.active_pile)
 
 
 async def start(websocket: ServerConnection):
     game = CheatGame()
     cur_player = game.create_player(websocket)
-    connected = {websocket}
+    connected: set[ServerConnection] = {websocket}
     join_key = secrets.token_urlsafe(2)
     JOIN[join_key] = game, connected
-
     try:
-        # Send the secret access token to the browser of the first player,
-        # where it'll be used for building a "join" link.
-        event = {
-            "type": "init",
-            "join": join_key,
-            "uuid": str(cur_player.uuid)
-        }
-
-        # Wait for host to start game
-        await websocket.send(json.dumps(event))
-        new_player_broadcast = {"type": "players", "players": list(game.players.keys())}
-        broadcast(connected, json.dumps(new_player_broadcast))
-        message = await websocket.recv()
-        event = json.loads(message)
-        assert event["type"] == "start"
+        await initialize_connection(websocket, join_key, cur_player, game, connected)
 
         # Initialize game and deal cards
         game.start_game()
@@ -62,7 +54,7 @@ async def start(websocket: ServerConnection):
         del JOIN[join_key]
 
 
-async def join(websocket: ServerConnection, join_key):
+async def join(websocket: ServerConnection, join_key: str):
     try:
         game, connected = JOIN[join_key]
     except KeyError:
@@ -72,22 +64,34 @@ async def join(websocket: ServerConnection, join_key):
     # Register to receive moves from this game.
     connected.add(websocket)
     cur_player: Player = game.create_player(websocket)
+
+    try:
+        await initialize_connection(websocket, join_key, cur_player, game, connected)
+        await play(websocket, game, cur_player)
+    finally:
+        connected.remove(websocket)
+
+
+async def initialize_connection(
+    websocket: ServerConnection,
+    join_key: str,
+    player: Player,
+    game: CheatGame,
+    connected: set[ServerConnection],
+):
     event = {
         "type": "init",
         "join": join_key,
-        "uuid": str(cur_player.uuid),
+        "uuid": str(player.uuid),
     }
     await websocket.send(json.dumps(event))
     new_player_broadcast = {"type": "players", "players": list(game.players.keys())}
     broadcast(connected, json.dumps(new_player_broadcast))
-    try:
-        # Wait for host to start game
-        message = await websocket.recv()
-        event = json.loads(message)
-        assert event["type"] == "start"
-        await play(websocket, game, cur_player)
-    finally:
-        connected.remove(websocket)
+
+    # Wait for host to start game
+    message = await websocket.recv()
+    event = json.loads(message)
+    assert event["type"] == "start"
 
 
 async def error(websocket, message):

@@ -102,3 +102,9 @@ class CheatGame:
                         return not self.call_cheat(player)
                     return True
 
+
+    def play_turn(self, player: str, cards: list[str], round_rank: Rank) -> None:
+        played_cards: list[Card] = [Card.from_str(card) for card in cards]
+        play: Play = Play(played_cards, player, round_rank)
+        self.last_play = play
+        self.active_pile.extend(played_cards)

@@ -12,10 +12,12 @@ enum Rank {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KI
 @onready var rank_lbl: Label = $RankLbl
 @onready var suit_lbl: Label = $SuitLbl
 
+var card_str: String = "AS"
+
 func _ready() -> void:
 	visible = false
 
-func set_values(_rank: Rank, _suit: Suit):
+func _set_values(_rank: Rank, _suit: Suit):
 	rank = _rank
 	suit = _suit
 
@@ -26,7 +28,8 @@ func set_values_from_string(characters: String):
 	assert(len(characters) == 2)
 	var _rank = char_to_rank(characters[0])
 	var _suit = char_to_suit(characters[1])
-	set_values(_rank, _suit)
+	_set_values(_rank, _suit)
+	card_str = characters
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -66,7 +69,7 @@ func char_to_rank(character: String) -> Rank:
 				return Rank.ACE
 
 #	calculate the Rank enum equivalent to the number
-	return int(character)-2
+	return int(character)-2 as Rank
 
 func char_to_suit(character: String) -> Suit:
 	assert(len(character) == 1)
@@ -84,3 +87,26 @@ func char_to_suit(character: String) -> Suit:
 
 #	Default to SPADES
 	return Suit.SPADES
+
+static func rank_to_char(_rank: Rank) -> String:
+#	the char representation is the first character in ranks ten to ace
+	if _rank > 7:
+		return Rank.keys()[_rank][0]
+	match _rank:
+		Rank.TWO:
+			return "2"
+		Rank.THREE:
+			return "3"
+		Rank.FOUR:
+			return "4"
+		Rank.FIVE:
+			return "5"
+		Rank.SIX:
+			return "6"
+		Rank.SEVEN:
+			return "7"
+		Rank.EIGHT:
+			return "8"
+		Rank.NINE:
+			return "9"
+	return ""
