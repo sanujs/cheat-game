@@ -90,6 +90,17 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 30
 text = "It's your turn!!"
 
+[node name="RoundRank" type="Label" parent="PlayUI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -694.0
+offset_top = 81.0
+offset_right = -592.0
+offset_bottom = 104.0
+grow_horizontal = 0
+text = "Round Rank: "
+
 [node name="LobbyUI" type="CanvasLayer" parent="."]
 
 [node name="NewGame" type="Button" parent="LobbyUI"]

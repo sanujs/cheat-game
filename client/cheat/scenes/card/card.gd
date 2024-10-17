@@ -48,7 +48,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("right_mouse"):
 		selected = false
 
-func char_to_rank(character: String) -> Rank:
+static func char_to_rank(character: String) -> Rank:
 	assert(len(character) == 1)
 #	when character is not a number
 	if not character.is_valid_int():

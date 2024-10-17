@@ -18,7 +18,7 @@ async def play(websocket: ServerConnection, game: CheatGame, player: Player, con
     print(game.current_turn_player.uuid)
     print(player.uuid)
     if game.current_turn_player.uuid == player.uuid:
-        event = {"type": "turn", "player": str(game.current_turn_player.uuid)}
+        event = {"type": "turn", "player": str(game.current_turn_player.uuid), "round_start": True}
         await websocket.send(json.dumps(event))
     async for message in websocket:
         event = json.loads(message)
@@ -28,7 +28,7 @@ async def play(websocket: ServerConnection, game: CheatGame, player: Player, con
                 # TODO: broadcast to all players how many cards this player played
                 #   and possibly the current round rank
                 next_player: Player = game.next_turn()
-                event = {"type": "turn", "player": str(next_player.uuid)}
+                event = {"type": "turn", "player": str(next_player.uuid), "round_start": False, "round_rank": event["round_rank"]}
                 broadcast(connected, json.dumps(event))
 
 async def start(websocket: ServerConnection):
