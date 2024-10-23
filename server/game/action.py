@@ -19,4 +19,5 @@ class Play:
 class Action(Enum):
     PASS = auto()
     CALL_CHEAT = auto()
+    PLAY = auto()
 

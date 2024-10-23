@@ -78,7 +78,7 @@ func _on_start_game_pressed() -> void:
 	startGameBtn.visible = false
 
 
-func _on_web_socket_client_message_received(json_recv: Variant) -> void:
+func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 	print(json_recv)
 	match json_recv["type"]:
 		"init":
@@ -98,21 +98,28 @@ func _on_web_socket_client_message_received(json_recv: Variant) -> void:
 				playerList.set_item_text(i, player_uuids[i])
 			playerList.visible = true
 		"hand":
-			for card_str in json_recv["hand"]:
-				str_to_card(card_str)
+			update_hand(json_recv["hand"])
 		"turn":
-			print(uuid + " turn")
-			
-			if json_recv["round_start"]:
+			print(json_recv["player"] + "'s turn")
+
+			if json_recv.get("round_start"):
 				round_start = true
+				roundRankLbl.set_text("Round Rank: ")
 			else:
 				round_start = false
-				round_rank = Card.char_to_rank(json_recv["round_rank"])
-				roundRankLbl.set_text("Round Rank: " + Card.Rank.keys()[round_rank])
+				if json_recv.has("round_rank"):
+					round_rank = Card.char_to_rank(json_recv["round_rank"])
+					roundRankLbl.set_text("Round Rank: " + Card.Rank.keys()[round_rank])
+
 			if json_recv["player"] == uuid:
 				your_turn = true
 				if round_start:
 					rankOption.visible = true
+
+
+func update_hand(new_hand: Array) -> void:
+	for card_str in new_hand:
+		str_to_card(card_str)
 
 
 func _on_play_cards_pressed() -> void:
@@ -132,17 +139,19 @@ func _on_play_cards_pressed() -> void:
 	}
 	client.send(data)
 	round_start = false
-	rankOption.visible = false
 	your_turn = false
+	rankOption.visible = false
 
 
 func _on_call_cheat_pressed() -> void:
 	if not your_turn:
 		return
 	var data = {
-		"type": "cheat"
+		"type": "call_cheat"
 	}
 	client.send(data)
+	round_start = false
+	your_turn = false
 
 
 func _on_pass_pressed() -> void:
@@ -152,3 +161,5 @@ func _on_pass_pressed() -> void:
 		"type": "pass"
 	}
 	client.send(data)
+	round_start = false
+	your_turn = false

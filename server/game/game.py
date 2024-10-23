@@ -19,25 +19,30 @@ class CheatGame:
         self.out_pile: list[Card] = []
         self.discard_pile: list[Card] = []
 
-
         self.last_play: Play = None
         self.starting_player: Player = None
         self.current_turn_player: Player = None
+        self.pass_count: int = 0
+        self.player_iterable = []
 
     def start_game(self) -> None:
         num_players = len(self.players)
         self.starting_player = choice(list(self.players.values()))
         for player in self.players.values():
-            player.hand = self.deck.deal(52//num_players)
+            player.hand = self.deck.deal(52 // num_players)
         if remaining_cards := len(self.deck.cards) > 0:
             self.discard_pile = self.deck.deal(remaining_cards)
-        self.player_iterable = islice(cycle(self.players.values()), list(self.players.values()).index(self.starting_player), None)
+        self.player_iterable = islice(
+            cycle(self.players.values()),
+            list(self.players.values()).index(self.starting_player),
+            None,
+        )
         self.next_turn()
 
-    def create_player(self, connection: ServerConnection) -> Player:
+    def create_player(self, connection: ServerConnection) -> str:
         uuid: str = str(uuid4())
         self.players[uuid] = Player(uuid, connection)
-        return self.players[uuid]
+        return uuid
 
     def next_turn(self) -> Player:
         self.current_turn_player = next(self.player_iterable)
@@ -46,32 +51,37 @@ class CheatGame:
     def play_game(self) -> None:
         while not self.play_round():
             pass
-        
-    def all_players_pass(self) -> None:
-        self.out_pile.append(self.active_pile)
-        self.active_pile = []
 
-    def call_cheat(self, accuser: Player) -> bool:
+    def all_players_pass(self) -> None:
+        self.out_pile.extend(self.active_pile)
+        self.active_pile = []
+        self.end_round()
+
+    def call_cheat(self, accuser_uuid: str) -> Player:
+        accuser: Player = self.players[accuser_uuid]
         accused: Player = self.players[self.last_play.player_name]
         if self.last_play.cheat:
             # The accuser correctly identified the cheating play
             self.starting_player = accuser
             accused.hand.extend(self.active_pile)
             self.active_pile = []
-            self.last_play = None
-            return True
+            self.end_round()
+            return accused
         else:
             # The accused was not cheating
             self.starting_player = accused
             accuser.hand.extend(self.active_pile)
             self.active_pile = []
-            self.last_play = None
-            return False
+            self.end_round()
+            return accuser
 
     # Returns True if game is over
     def play_round(self) -> bool:
-        players_cycle = islice(cycle(self.players.values()),
-                               list(self.players.values()).index(self.starting_player), None)
+        players_cycle = islice(
+            cycle(self.players.values()),
+            list(self.players.values()).index(self.starting_player),
+            None,
+        )
         pass_count: int = 0
         start: bool = True
         round_rank: Rank = None
@@ -103,9 +113,26 @@ class CheatGame:
                         return not self.call_cheat(player)
                     return True
 
-
-    def play_turn(self, player: str, cards: list[str], round_rank: Rank) -> None:
-        played_cards: list[Card] = strings_to_cards(cards)
-        play: Play = Play(played_cards, player, round_rank)
+    def play_turn(self, uuid: str, cards: list[str], round_rank: Rank) -> None:
+        played_cards: list[Card] = self.players[uuid].remove_cards(strings_to_cards(cards))
+        play: Play = Play(played_cards, uuid, round_rank)
         self.last_play = play
         self.active_pile.extend(played_cards)
+        self.pass_count = 0
+
+    def pass_turn(self) -> bool:
+        self.pass_count += 1
+        if self.pass_count == len(self.players) - 1:
+            self.all_players_pass()
+            return True
+        return False
+
+    def end_round(self) -> None:
+        print(f"new starting player is {self.starting_player.uuid}")
+        self.last_play = None
+        self.pass_count = 0
+        self.player_iterable = islice(
+            cycle(self.players.values()),
+            list(self.players.values()).index(self.starting_player),
+            None,
+        )
