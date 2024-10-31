@@ -4,12 +4,12 @@ from game.deck.card import Card
 from game.deck.rank import Rank
 
 class Play:
-    def __init__(self, cards: list[Card], player_name: str, rank: Rank) -> None:
+    def __init__(self, cards: list[Card], player_uuid: str, rank: Rank) -> None:
         self.cards: list[Card] = cards
-        self.player_name: str = player_name
+        self.player_uuid: str = player_uuid
         self.cheat: bool = not self.valid_play(rank)
         self.claimed_rank: Rank = rank
-        print(f"{self.player_name} played {self.cards} while rank is {self.claimed_rank.name}. Cheating is {self.cheat}")
+        print(f"{self.player_uuid} played {self.cards} while rank is {self.claimed_rank.name}. Cheating is {self.cheat}")
         print(f"{rank.name} is the round rank")
 
 

@@ -59,7 +59,7 @@ class CheatGame:
 
     def call_cheat(self, accuser_uuid: str) -> Player:
         accuser: Player = self.players[accuser_uuid]
-        accused: Player = self.players[self.last_play.player_name]
+        accused: Player = self.players[self.last_play.player_uuid]
         if self.last_play.cheat:
             # The accuser correctly identified the cheating play
             self.starting_player = accuser
@@ -114,7 +114,9 @@ class CheatGame:
                     return True
 
     def play_turn(self, uuid: str, cards: list[str], round_rank: Rank) -> None:
-        played_cards: list[Card] = self.players[uuid].remove_cards(strings_to_cards(cards))
+        played_cards: list[Card] = self.players[uuid].remove_cards(
+            strings_to_cards(cards)
+        )
         play: Play = Play(played_cards, uuid, round_rank)
         self.last_play = play
         self.active_pile.extend(played_cards)

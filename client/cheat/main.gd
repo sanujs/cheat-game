@@ -11,6 +11,7 @@ extends Node
 @onready var rankOption = $PlayUI/RankOption
 @onready var yourTurnLbl = $PlayUI/YourTurn
 @onready var roundRankLbl = $PlayUI/RoundRank
+@onready var activePileLbl = $PlayUI/ActivePileLbl
 
 var connected = false
 var uuid = ""
@@ -110,6 +111,7 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 				if json_recv.has("round_rank"):
 					round_rank = Card.char_to_rank(json_recv["round_rank"])
 					roundRankLbl.set_text("Round Rank: " + Card.Rank.keys()[round_rank])
+			activePileLbl.set_text("Active Pile: " + str(json_recv["active_pile"]))
 
 			if json_recv["player"] == uuid:
 				your_turn = true

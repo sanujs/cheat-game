@@ -20,9 +20,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -193.5
-offset_top = -29.0
+offset_top = 29.0
 offset_right = 193.5
-offset_bottom = 29.0
+offset_bottom = 87.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -100,6 +100,21 @@ offset_right = -592.0
 offset_bottom = 104.0
 grow_horizontal = 0
 text = "Round Rank: "
+
+[node name="ActivePileLbl" type="Label" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.5
+offset_top = -33.5
+offset_right = 48.5
+offset_bottom = -10.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Active Pile: 0"
 
 [node name="LobbyUI" type="CanvasLayer" parent="."]
 

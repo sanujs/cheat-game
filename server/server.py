@@ -27,6 +27,7 @@ async def play(
             "type": "turn",
             "player": str(game.current_turn_player.uuid),
             "round_start": True,
+            "active_pile": len(game.active_pile),
         }
         await websocket.send(json.dumps(event))
     async for message in websocket:
@@ -41,6 +42,7 @@ async def play(
                     "player": str(next_player.uuid),
                     "round_start": False,
                     "round_rank": event["round_rank"],
+                    "active_pile": len(game.active_pile),
                 }
                 broadcast(connected, json.dumps(event))
             case "pass":
@@ -50,14 +52,13 @@ async def play(
                     "type": "turn",
                     "player": str(next_player.uuid),
                     "round_start": round_start,
+                    "active_pile": len(game.active_pile),
                 }
                 broadcast(connected, json.dumps(event))
             case "call_cheat":
                 print(f"{uuid} called cheat")
                 loser: Player = game.call_cheat(uuid)
                 next_player: Player = game.next_turn()
-                print(loser.hand_to_str())
-                print(loser.connection)
                 event = {
                     "type": "hand",
                     "hand": loser.hand_to_str(),
@@ -68,6 +69,7 @@ async def play(
                     "type": "turn",
                     "player": str(next_player.uuid),
                     "round_start": True,
+                    "active_pile": len(game.active_pile),
                 }
                 broadcast(connected, json.dumps(event))
 
