@@ -116,6 +116,34 @@ grow_vertical = 2
 size_flags_horizontal = 4
 text = "Active Pile: 0"
 
+[node name="GameOverLbl" type="Label" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -536.0
+offset_top = -211.0
+offset_right = 536.0
+offset_bottom = -70.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.3241, 0.258944, 1)
+theme_override_font_sizes/font_size = 50
+text = "Game Over!!!
+Winner is "
+horizontal_alignment = 1
+
+[node name="UUIDLbl" type="Label" parent="PlayUI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -41.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "UUID"
+horizontal_alignment = 2
+
 [node name="LobbyUI" type="CanvasLayer" parent="."]
 
 [node name="NewGame" type="Button" parent="LobbyUI"]

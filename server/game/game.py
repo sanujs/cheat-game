@@ -1,4 +1,5 @@
 from itertools import cycle, islice
+from typing import Optional
 from game.action import Action, Play
 from game.deck.deck import Deck, Card
 from game.deck.rank import Rank
@@ -19,11 +20,13 @@ class CheatGame:
         self.out_pile: list[Card] = []
         self.discard_pile: list[Card] = []
 
-        self.last_play: Play = None
-        self.starting_player: Player = None
-        self.current_turn_player: Player = None
+        self.last_play: Optional[Play] = None
+        self.starting_player: Optional[Player] = None
+        self.current_turn_player: Optional[Player] = None
         self.pass_count: int = 0
         self.player_iterable = []
+
+        self.almost_winner: Optional[str] = None
 
     def start_game(self) -> None:
         num_players = len(self.players)
@@ -51,11 +54,6 @@ class CheatGame:
     def play_game(self) -> None:
         while not self.play_round():
             pass
-
-    def all_players_pass(self) -> None:
-        self.out_pile.extend(self.active_pile)
-        self.active_pile = []
-        self.end_round()
 
     def call_cheat(self, accuser_uuid: str) -> Player:
         accuser: Player = self.players[accuser_uuid]
@@ -117,6 +115,8 @@ class CheatGame:
         played_cards: list[Card] = self.players[uuid].remove_cards(
             strings_to_cards(cards)
         )
+        if len(self.players[uuid].hand) == 0:
+            self.almost_winner = uuid
         play: Play = Play(played_cards, uuid, round_rank)
         self.last_play = play
         self.active_pile.extend(played_cards)
@@ -125,7 +125,9 @@ class CheatGame:
     def pass_turn(self) -> bool:
         self.pass_count += 1
         if self.pass_count == len(self.players) - 1:
-            self.all_players_pass()
+            self.out_pile.extend(self.active_pile)
+            self.active_pile = []
+            self.end_round()
             return True
         return False
 

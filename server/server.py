@@ -9,6 +9,13 @@ from game.player import Player
 
 JOIN = {}
 
+def game_over(
+    game: CheatGame,
+    connected: set[ServerConnection],
+):
+    event = {"type": "end", "winner": game.almost_winner}
+    broadcast(connected, json.dumps(event))
+
 
 async def play(
     websocket: ServerConnection,
@@ -17,11 +24,8 @@ async def play(
     connected: set[ServerConnection],
 ):
     hand = game.players[uuid].hand_to_str()
-    print(hand)
     event = {"type": "hand", "hand": hand}
     await websocket.send(json.dumps(event))
-    print(game.current_turn_player.uuid)
-    print(uuid)
     if game.current_turn_player.uuid == uuid:
         event = {
             "type": "turn",
@@ -32,10 +36,13 @@ async def play(
         await websocket.send(json.dumps(event))
     async for message in websocket:
         event = json.loads(message)
+        print(f"Received {event["type"]} from {uuid}")
+        print(event)
         match event["type"]:
             case "play":
+                if game.almost_winner is not None:
+                    game_over(game, connected)
                 game.play_turn(uuid, event["cards"], Rank(event["round_rank"]))
-                # TODO: broadcast to all players how many cards this player played
                 next_player: Player = game.next_turn()
                 event = {
                     "type": "turn",
@@ -47,6 +54,8 @@ async def play(
                 broadcast(connected, json.dumps(event))
             case "pass":
                 round_start = game.pass_turn()
+                if game.almost_winner is not None and round_start:
+                    game_over(game, connected)
                 next_player: Player = game.next_turn()
                 event = {
                     "type": "turn",
@@ -58,6 +67,8 @@ async def play(
             case "call_cheat":
                 print(f"{uuid} called cheat")
                 loser: Player = game.call_cheat(uuid)
+                if game.almost_winner != loser.uuid:
+                    game_over(game, connected)
                 next_player: Player = game.next_turn()
                 event = {
                     "type": "hand",

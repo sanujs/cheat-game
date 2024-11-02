@@ -12,6 +12,8 @@ extends Node
 @onready var yourTurnLbl = $PlayUI/YourTurn
 @onready var roundRankLbl = $PlayUI/RoundRank
 @onready var activePileLbl = $PlayUI/ActivePileLbl
+@onready var gameOverLbl = $PlayUI/GameOverLbl
+@onready var uuidLbl = $PlayUI/UUIDLbl
 
 var connected = false
 var uuid = ""
@@ -23,6 +25,7 @@ var round_start = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	gameOverLbl.visible = false
 	startGameBtn.visible = false
 	playerList.visible = false
 	$PlayUI.visible = false
@@ -84,6 +87,7 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 	match json_recv["type"]:
 		"init":
 			uuid = json_recv["uuid"]
+			uuidLbl.set_text(uuid)
 			join_key = json_recv["join"]
 			joinCodeLbl.set_text("Join Code: " + join_key)
 			print(uuid)
@@ -111,12 +115,17 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 				if json_recv.has("round_rank"):
 					round_rank = Card.char_to_rank(json_recv["round_rank"])
 					roundRankLbl.set_text("Round Rank: " + Card.Rank.keys()[round_rank])
+
 			activePileLbl.set_text("Active Pile: " + str(json_recv["active_pile"]))
 
 			if json_recv["player"] == uuid:
 				your_turn = true
 				if round_start:
 					rankOption.visible = true
+		"end":
+			gameOverLbl.set_text("Game Over!\nWinner is " + json_recv["winner"])
+			#print("Winner is " + json_recv["winner"])
+			gameOverLbl.visible = true
 
 
 func update_hand(new_hand: Array) -> void:
@@ -153,7 +162,6 @@ func _on_call_cheat_pressed() -> void:
 	}
 	client.send(data)
 	round_start = false
-	your_turn = false
 
 
 func _on_pass_pressed() -> void:
