@@ -41,19 +41,6 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
-[node name="Card" parent="PlayUI/Hand" instance=ExtResource("1_o6y44")]
-layout_mode = 2
-
-[node name="Card2" parent="PlayUI/Hand" instance=ExtResource("1_o6y44")]
-layout_mode = 2
-rank = 3
-suit = 1
-
-[node name="Card3" parent="PlayUI/Hand" instance=ExtResource("1_o6y44")]
-layout_mode = 2
-rank = 4
-suit = 3
-
 [node name="PlayCards" type="Button" parent="PlayUI"]
 offset_left = 753.0
 offset_top = 634.0

@@ -2,7 +2,6 @@ class_name Card
 extends Control
 
 enum Suit {SPADES, HEARTS, CLUBS, DIAMONDS}
-# TODO: Finish ranks
 enum Rank {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE}
 
 @export var rank: Rank = Rank.ACE

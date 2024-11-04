@@ -12,6 +12,8 @@ extends Node
 @onready var yourTurnLbl = $PlayUI/YourTurn
 @onready var roundRankLbl = $PlayUI/RoundRank
 @onready var activePileLbl = $PlayUI/ActivePileLbl
+@onready var discardPileLbl = $PlayUI/DiscardPileLbl
+@onready var outPileLbl = $PlayUI/OutPileLbl
 @onready var gameOverLbl = $PlayUI/GameOverLbl
 @onready var uuidLbl = $PlayUI/UUIDLbl
 @onready var playerUI = $PlayUI/PlayerUI
@@ -42,13 +44,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if your_turn != yourTurnLbl.visible:
 		yourTurnLbl.visible = your_turn
-
-
-func str_to_card(card_string: String) -> void:
-	var new_card: Card = card_scene.instantiate()
-	hand.add_child(new_card)
-	new_card.set_values_from_string(card_string)
-	new_card.visible = true
 
 
 func _on_new_game_pressed() -> void:
@@ -118,6 +113,9 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 			for i in range(player_uuids.size()):
 				playerList.set_item_text(i, player_uuids[i])
 			playerList.visible = true
+		"setup":
+			update_hand(json_recv["hand"])
+			discardPileLbl.set_text("Discard Pile: " + str(json_recv["discard_pile"]))
 		"hand":
 			update_hand(json_recv["hand"])
 		"turn":
@@ -138,6 +136,8 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 				your_turn = true
 				if round_start:
 					rankOption.visible = true
+			if json_recv.has("out_pile"):
+				outPileLbl.set_text("Out Pile: " + str(json_recv["out_pile"]))
 		"end":
 			gameOverLbl.set_text("Game Over!\nWinner is " + json_recv["winner"])
 			#print("Winner is " + json_recv["winner"])
@@ -145,8 +145,17 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 
 
 func update_hand(new_hand: Array) -> void:
+	var current_hand = hand.get_children().map(func(card): return card.card_str)
 	for card_str in new_hand:
-		str_to_card(card_str)
+		if not current_hand.has(card_str):
+			add_card_to_hand(card_str)
+
+
+func add_card_to_hand(card_string: String) -> void:
+	var new_card: Card = card_scene.instantiate()
+	hand.add_child(new_card)
+	new_card.set_values_from_string(card_string)
+	new_card.visible = true
 
 
 func _on_play_cards_pressed() -> void:

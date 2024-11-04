@@ -9,6 +9,7 @@ from game.player import Player
 
 JOIN = {}
 
+
 def game_over(
     game: CheatGame,
     connected: set[ServerConnection],
@@ -24,7 +25,7 @@ async def play(
     connected: set[ServerConnection],
 ):
     hand = game.players[uuid].hand_to_str()
-    event = {"type": "hand", "hand": hand}
+    event = {"type": "setup", "hand": hand, "discard_pile": len(game.discard_pile)}
     await websocket.send(json.dumps(event))
     if game.current_turn_player.uuid == uuid:
         event = {
@@ -62,12 +63,13 @@ async def play(
                     "player": str(next_player.uuid),
                     "round_start": round_start,
                     "active_pile": len(game.active_pile),
+                    "out_pile": len(game.out_pile),
                 }
                 broadcast(connected, json.dumps(event))
             case "call_cheat":
                 print(f"{uuid} called cheat")
                 loser: Player = game.call_cheat(uuid)
-                if game.almost_winner != loser.uuid:
+                if game.almost_winner is not None and game.almost_winner != loser.uuid:
                     game_over(game, connected)
                 next_player: Player = game.next_turn()
                 event = {
@@ -93,6 +95,11 @@ async def start(websocket: ServerConnection):
     JOIN[join_key] = game, connected
     try:
         await initialize_connection(websocket, join_key, player_uuid, game, connected)
+
+        # Wait for client to start game
+        message = await websocket.recv()
+        event = json.loads(message)
+        assert event["type"] == "start"
 
         # Initialize game and deal cards
         game.start_game()
@@ -123,6 +130,10 @@ async def join(websocket: ServerConnection, join_key: str):
 
     try:
         await initialize_connection(websocket, join_key, player_uuid, game, connected)
+        # Wait for host to start game
+        message = await websocket.recv()
+        event = json.loads(message)
+        assert event["type"] == "start"
         await play(websocket, game, player_uuid, connected)
     finally:
         connected.remove(websocket)
@@ -143,11 +154,6 @@ async def initialize_connection(
     await websocket.send(json.dumps(event))
     new_player_broadcast = {"type": "players", "players": list(game.players.keys())}
     broadcast(connected, json.dumps(new_player_broadcast))
-
-    # Wait for host to start game
-    message = await websocket.recv()
-    event = json.loads(message)
-    assert event["type"] == "start"
 
 
 async def error(websocket, message):
