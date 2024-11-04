@@ -14,6 +14,7 @@ extends Node
 @onready var activePileLbl = $PlayUI/ActivePileLbl
 @onready var gameOverLbl = $PlayUI/GameOverLbl
 @onready var uuidLbl = $PlayUI/UUIDLbl
+@onready var playerUI = $PlayUI/PlayerUI
 
 var connected = false
 var uuid = ""
@@ -21,6 +22,7 @@ var join_key = ""
 var your_turn = false
 var round_rank: Card.Rank
 var round_start = true
+var player_uuids = []
 
 
 # Called when the node enters the scene tree for the first time.
@@ -29,6 +31,7 @@ func _ready() -> void:
 	startGameBtn.visible = false
 	playerList.visible = false
 	$PlayUI.visible = false
+	playerUI.visible = false
 	rankOption.visible = false
 	yourTurnLbl.visible = your_turn
 	for rank in Card.Rank.keys():
@@ -94,11 +97,24 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 		"start":
 			var data = {"type": "start"}
 			client.send(data)
+			var playerNodes: Array = playerUI.get_children()
+			var my_index = player_uuids.find(uuid)
+
+			# Rearrange player list around current player
+			for i in player_uuids.size():
+				var new_index
+				if i >= my_index:
+					new_index = i-my_index
+				else:
+					new_index = i+(player_uuids.size()-my_index)
+				playerNodes[new_index].set_player_name(player_uuids[i])
 			$LobbyUI.visible = false
 			$PlayUI.visible = true
+			playerUI.visible = true
 			round_start = true
+			gameOverLbl.visible = false
 		"players":
-			var player_uuids = json_recv["players"]
+			player_uuids = json_recv["players"]
 			for i in range(player_uuids.size()):
 				playerList.set_item_text(i, player_uuids[i])
 			playerList.visible = true

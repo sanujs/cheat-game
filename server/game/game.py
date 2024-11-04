@@ -1,6 +1,6 @@
 from itertools import cycle, islice
 from typing import Optional
-from game.action import Action, Play
+from game.action import Play
 from game.deck.deck import Deck, Card
 from game.deck.rank import Rank
 from game.deck.utils import strings_to_cards
@@ -51,10 +51,6 @@ class CheatGame:
         self.current_turn_player = next(self.player_iterable)
         return self.current_turn_player
 
-    def play_game(self) -> None:
-        while not self.play_round():
-            pass
-
     def call_cheat(self, accuser_uuid: str) -> Player:
         accuser: Player = self.players[accuser_uuid]
         accused: Player = self.players[self.last_play.player_uuid]
@@ -72,44 +68,6 @@ class CheatGame:
             self.active_pile = []
             self.end_round()
             return accuser
-
-    # Returns True if game is over
-    def play_round(self) -> bool:
-        players_cycle = islice(
-            cycle(self.players.values()),
-            list(self.players.values()).index(self.starting_player),
-            None,
-        )
-        pass_count: int = 0
-        start: bool = True
-        round_rank: Rank = None
-        for player in players_cycle:
-            action: Action | Play = player.turn(round_rank)
-            print(f"Type {type(action) is Action}")
-            if type(action) is Action:
-                match action:
-                    case Action.PASS:
-                        pass_count += 1
-                        if pass_count == len(self.players):
-                            self.all_players_pass()
-                            return False
-                    case Action.CALL_CHEAT:
-                        print("somebody called cheat")
-                        self.call_cheat(player)
-                        return False
-            elif type(action) is Play:
-                pass_count = 0
-                self.last_play = action
-                self.active_pile.extend(action.cards)
-                if start:
-                    round_rank = action.claimed_rank
-                    start = False
-                if len(player.hand) == 0:
-                    player = next(players_cycle)
-                    action = player.turn(round_rank)
-                    if action is Action.CALL_CHEAT:
-                        return not self.call_cheat(player)
-                    return True
 
     def play_turn(self, uuid: str, cards: list[str], round_rank: Rank) -> None:
         played_cards: list[Card] = self.players[uuid].remove_cards(

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=5 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://bohd1wf2efcrh" path="res://scenes/card/card.tscn" id="1_o6y44"]
 [ext_resource type="Script" path="res://websocket_client.gd" id="3_hmncd"]
+[ext_resource type="PackedScene" uid="uid://douyuut5kwh04" path="res://scenes/player.tscn" id="4_3ra02"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_2vsyr")
@@ -20,9 +21,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -193.5
-offset_top = 29.0
+offset_top = 67.0
 offset_right = 193.5
-offset_bottom = 87.0
+offset_bottom = 125.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -33,9 +34,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -400.0
-offset_top = -253.0
+offset_top = -213.0
 offset_right = 400.0
-offset_bottom = -153.0
+offset_bottom = -113.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
@@ -81,24 +82,23 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -496.0
-offset_top = -299.0
-offset_right = -291.0
-offset_bottom = -212.0
+offset_left = -625.0
+offset_top = -356.0
+offset_right = -420.0
+offset_bottom = -269.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 30
 text = "It's your turn!!"
 
 [node name="RoundRank" type="Label" parent="PlayUI"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -694.0
-offset_top = 81.0
-offset_right = -592.0
-offset_bottom = 104.0
-grow_horizontal = 0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -51.0
+offset_right = 51.0
+offset_bottom = 23.0
+grow_horizontal = 2
 text = "Round Rank: "
 
 [node name="ActivePileLbl" type="Label" parent="PlayUI"]
@@ -107,14 +107,44 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -48.5
-offset_top = -33.5
-offset_right = 48.5
-offset_bottom = -10.5
+offset_left = -65.0
+offset_top = -183.0
+offset_right = 32.0
+offset_bottom = -160.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 text = "Active Pile: 0"
+
+[node name="DiscardPileLbl" type="Label" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -67.0
+offset_top = -130.5
+offset_right = 41.0
+offset_bottom = -107.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Discard Pile: 0"
+
+[node name="OutPileLbl" type="Label" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.0
+offset_top = -157.0
+offset_right = 34.0
+offset_bottom = -134.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Out Pile: 0"
 
 [node name="GameOverLbl" type="Label" parent="PlayUI"]
 anchors_preset = 8
@@ -122,10 +152,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -536.0
-offset_top = -211.0
-offset_right = 536.0
-offset_bottom = -70.0
+offset_left = -549.0
+offset_top = -326.0
+offset_right = 523.0
+offset_bottom = -185.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.3241, 0.258944, 1)
@@ -133,6 +163,23 @@ theme_override_font_sizes/font_size = 50
 text = "Game Over!!!
 Winner is "
 horizontal_alignment = 1
+
+[node name="PlayerUI" type="CanvasLayer" parent="PlayUI"]
+
+[node name="Player" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(648, 334)
+
+[node name="Player2" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(356, 251)
+
+[node name="Player3" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(439, 83)
+
+[node name="Player4" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(809, 85)
+
+[node name="Player5" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(912, 249)
 
 [node name="UUIDLbl" type="Label" parent="PlayUI"]
 anchors_preset = 1
