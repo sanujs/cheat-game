@@ -4,13 +4,12 @@ from game.deck.suit import Suit
 import random
 
 class Deck:
-    all_cards: list[Card] = []
-    for s in Suit:
-        for r in Rank:
-            all_cards.append(Card(r, s))
 
     def __init__(self) -> None:
-        self.cards: list[Card] = self.all_cards
+        self.cards: list[Card] = []
+        for s in Suit:
+            for r in Rank:
+                self.cards.append(Card(r, s))
         self.dealt_cards = []
 
     def shuffle(self) -> None:

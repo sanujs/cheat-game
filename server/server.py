@@ -85,6 +85,7 @@ async def play(
                     "player": str(next_player.uuid),
                     "round_start": True,
                     "active_pile": len(game.active_pile),
+                    # TODO: rename "prev_player"
                     "prev_player": str(loser.uuid),
                 }
                 broadcast(connected, json.dumps(event))
