@@ -43,6 +43,7 @@ async def play(
             case "play":
                 if game.almost_winner is not None:
                     game_over(game, connected)
+                prev_player: Player = game.current_turn_player
                 game.play_turn(uuid, event["cards"], Rank(event["round_rank"]))
                 next_player: Player = game.next_turn()
                 event = {
@@ -51,6 +52,7 @@ async def play(
                     "round_start": False,
                     "round_rank": event["round_rank"],
                     "active_pile": len(game.active_pile),
+                    "prev_player": str(prev_player.uuid),
                 }
                 broadcast(connected, json.dumps(event))
             case "pass":
@@ -83,6 +85,7 @@ async def play(
                     "player": str(next_player.uuid),
                     "round_start": True,
                     "active_pile": len(game.active_pile),
+                    "prev_player": str(loser.uuid),
                 }
                 broadcast(connected, json.dumps(event))
 

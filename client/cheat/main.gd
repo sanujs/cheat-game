@@ -25,6 +25,8 @@ var your_turn = false
 var round_rank: Card.Rank
 var round_start = true
 var player_uuids = []
+var players = {}
+var active_pile_len = 0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -103,6 +105,8 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 				else:
 					new_index = i+(player_uuids.size()-my_index)
 				playerNodes[new_index].set_player_name(player_uuids[i])
+				players[player_uuids[i]] = playerNodes[new_index]
+			print(players)
 			$LobbyUI.visible = false
 			$PlayUI.visible = true
 			playerUI.visible = true
@@ -114,6 +118,9 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 				playerList.set_item_text(i, player_uuids[i])
 			playerList.visible = true
 		"setup":
+			var hand_length: int = len(json_recv["hand"])
+			for uuid in player_uuids:
+				players[uuid].set_hand_size(hand_length)
 			update_hand(json_recv["hand"])
 			discardPileLbl.set_text("Discard Pile: " + str(json_recv["discard_pile"]))
 		"hand":
@@ -131,11 +138,18 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 					roundRankLbl.set_text("Round Rank: " + Card.Rank.keys()[round_rank])
 
 			activePileLbl.set_text("Active Pile: " + str(json_recv["active_pile"]))
+			# Calculate new player hand sizes from the change in active pile size
+			var num_played_cards = json_recv["active_pile"] - active_pile_len
+			active_pile_len = json_recv["active_pile"]
+			if json_recv.has("prev_player"):
+				players[json_recv["prev_player"]].add_cards(num_played_cards * -1)
 
 			if json_recv["player"] == uuid:
 				your_turn = true
 				if round_start:
 					rankOption.visible = true
+			else:
+				your_turn = false
 			if json_recv.has("out_pile"):
 				outPileLbl.set_text("Out Pile: " + str(json_recv["out_pile"]))
 		"end":
@@ -175,7 +189,6 @@ func _on_play_cards_pressed() -> void:
 	}
 	client.send(data)
 	round_start = false
-	your_turn = false
 	rankOption.visible = false
 
 
@@ -186,7 +199,6 @@ func _on_call_cheat_pressed() -> void:
 		"type": "call_cheat"
 	}
 	client.send(data)
-	round_start = false
 
 
 func _on_pass_pressed() -> void:
@@ -196,5 +208,3 @@ func _on_pass_pressed() -> void:
 		"type": "pass"
 	}
 	client.send(data)
-	round_start = false
-	your_turn = false
