@@ -4,8 +4,8 @@ extends Node
 @onready var client: WebSocketClient = $WebSocketClient
 @onready var hand = $PlayUI/Hand
 @onready var startGameBtn = $LobbyUI/StartGame
-@onready var newGameBtn = $LobbyUI/NewGame
-@onready var joinGameBtn = $LobbyUI/JoinGame
+@onready var newGameBtn = $LandingPage/NewGame
+@onready var joinGameBtn = $LandingPage/JoinGame
 @onready var joinCodeLbl = $LobbyUI/JoinCode
 @onready var playerList = $LobbyUI/PlayerList
 @onready var rankOption = $PlayUI/RankOption

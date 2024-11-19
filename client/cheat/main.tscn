@@ -9,8 +9,111 @@
 script = ExtResource("1_2vsyr")
 card_scene = ExtResource("1_o6y44")
 
+[node name="Background" type="ColorRect" parent="."]
+offset_left = 4.0
+offset_right = 1985.0
+offset_bottom = 1080.0
+color = Color(0.529628, 0.79526, 0.819667, 1)
+
 [node name="WebSocketClient" type="Node" parent="."]
 script = ExtResource("3_hmncd")
+
+[node name="LandingPage" type="CanvasLayer" parent="."]
+
+[node name="NewGame" type="Button" parent="LandingPage"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -117.0
+offset_right = 75.0
+offset_bottom = -67.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Create Lobby
+"
+
+[node name="JoinGame" type="LineEdit" parent="LandingPage"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -15.5
+offset_right = 150.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Or input your join code"
+
+[node name="Label" type="Label" parent="LandingPage"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -214.0
+offset_right = 219.0
+offset_bottom = 205.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.705713, 0.65874, 0.214851, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 5
+theme_override_font_sizes/font_size = 150
+text = "SHAM"
+
+[node name="LobbyUI" type="CanvasLayer" parent="."]
+
+[node name="StartGame" type="Button" parent="LobbyUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 17.0
+offset_top = -53.0
+offset_right = 167.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start Game
+"
+
+[node name="JoinCode" type="Label" parent="LobbyUI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -41.0
+offset_top = 25.0
+offset_right = 41.0
+offset_bottom = 48.0
+grow_horizontal = 2
+text = "Join Code: "
+
+[node name="PlayerList" type="ItemList" parent="LobbyUI"]
+offset_left = 493.0
+offset_top = 267.0
+offset_right = 644.0
+offset_bottom = 418.0
+item_count = 5
+item_0/text = "Waiting..."
+item_0/selectable = false
+item_0/disabled = true
+item_1/text = "Waiting..."
+item_1/selectable = false
+item_1/disabled = true
+item_2/text = "Waiting..."
+item_2/selectable = false
+item_2/disabled = true
+item_3/text = "Waiting..."
+item_3/selectable = false
+item_3/disabled = true
+item_4/text = "Waiting..."
+item_4/selectable = false
+item_4/disabled = true
 
 [node name="PlayUI" type="CanvasLayer" parent="."]
 
@@ -152,6 +255,7 @@ Winner is "
 horizontal_alignment = 1
 
 [node name="PlayerUI" type="CanvasLayer" parent="PlayUI"]
+visible = false
 
 [node name="Player" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
 position = Vector2(648, 334)
@@ -178,87 +282,10 @@ grow_horizontal = 0
 text = "UUID"
 horizontal_alignment = 2
 
-[node name="LobbyUI" type="CanvasLayer" parent="."]
-
-[node name="NewGame" type="Button" parent="LobbyUI"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -75.0
-offset_top = 119.0
-offset_right = 75.0
-offset_bottom = 169.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-text = "Create Lobby
-"
-
-[node name="JoinGame" type="LineEdit" parent="LobbyUI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -141.5
-offset_right = 150.0
-offset_bottom = -110.5
-grow_horizontal = 2
-grow_vertical = 2
-placeholder_text = "Or input your join code"
-
-[node name="StartGame" type="Button" parent="LobbyUI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 17.0
-offset_top = -53.0
-offset_right = 167.0
-offset_bottom = -3.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Start Game
-"
-
-[node name="JoinCode" type="Label" parent="LobbyUI"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -41.0
-offset_top = 25.0
-offset_right = 41.0
-offset_bottom = 48.0
-grow_horizontal = 2
-text = "Join Code: "
-
-[node name="PlayerList" type="ItemList" parent="LobbyUI"]
-offset_left = 493.0
-offset_top = 267.0
-offset_right = 644.0
-offset_bottom = 418.0
-item_count = 5
-item_0/text = "Waiting..."
-item_0/selectable = false
-item_0/disabled = true
-item_1/text = "Waiting..."
-item_1/selectable = false
-item_1/disabled = true
-item_2/text = "Waiting..."
-item_2/selectable = false
-item_2/disabled = true
-item_3/text = "Waiting..."
-item_3/selectable = false
-item_3/disabled = true
-item_4/text = "Waiting..."
-item_4/selectable = false
-item_4/disabled = true
-
 [connection signal="message_received" from="WebSocketClient" to="." method="_on_web_socket_client_message_received"]
+[connection signal="pressed" from="LandingPage/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="text_submitted" from="LandingPage/JoinGame" to="." method="_on_join_game_text_submitted"]
+[connection signal="pressed" from="LobbyUI/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="PlayUI/PlayCards" to="." method="_on_play_cards_pressed"]
 [connection signal="pressed" from="PlayUI/Pass" to="." method="_on_pass_pressed"]
 [connection signal="pressed" from="PlayUI/CallCheat" to="." method="_on_call_cheat_pressed"]
-[connection signal="pressed" from="LobbyUI/NewGame" to="." method="_on_new_game_pressed"]
-[connection signal="text_submitted" from="LobbyUI/JoinGame" to="." method="_on_join_game_text_submitted"]
-[connection signal="pressed" from="LobbyUI/StartGame" to="." method="_on_start_game_pressed"]
