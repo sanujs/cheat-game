@@ -1,24 +1,84 @@
-[gd_scene load_steps=5 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=11 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://bohd1wf2efcrh" path="res://scenes/card/card.tscn" id="1_o6y44"]
 [ext_resource type="Script" path="res://websocket_client.gd" id="3_hmncd"]
+[ext_resource type="Texture2D" uid="uid://bvmimx8p8nm2m" path="res://assets/green_felt.jpg" id="3_uaxcu"]
 [ext_resource type="PackedScene" uid="uid://douyuut5kwh04" path="res://scenes/player.tscn" id="4_3ra02"]
+[ext_resource type="Texture2D" uid="uid://bf7kok1avmub8" path="res://assets/SHAM-paint-thick.svg" id="5_3rou0"]
+[ext_resource type="Texture2D" uid="uid://qtts6o3i3i37" path="res://assets/sham-paint-thick-outline.svg" id="6_m21p6"]
+[ext_resource type="FontFile" uid="uid://dadpgs85xbvjx" path="res://fonts/Quintessential-Regular.ttf" id="7_y018u"]
+[ext_resource type="FontFile" uid="uid://wtq10ln4vsce" path="res://fonts/FontdinerSwanky-Regular.ttf" id="7_yf6up"]
+[ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://main_theme.tres" id="8_a3a40"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_2vsyr")
 card_scene = ExtResource("1_o6y44")
 
 [node name="Background" type="ColorRect" parent="."]
+visible = false
 offset_left = 4.0
 offset_right = 1985.0
 offset_bottom = 1080.0
-color = Color(0.529628, 0.79526, 0.819667, 1)
+color = Color(0.277936, 0.662929, 0.346134, 1)
+
+[node name="GreenFelt" type="Sprite2D" parent="."]
+position = Vector2(987, 538)
+scale = Vector2(1.063, 0.921)
+texture = ExtResource("3_uaxcu")
+metadata/_edit_lock_ = true
 
 [node name="WebSocketClient" type="Node" parent="."]
 script = ExtResource("3_hmncd")
 
 [node name="LandingPage" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Sham-paint-thick" type="Sprite2D" parent="LandingPage"]
+visible = false
+position = Vector2(995, 112)
+scale = Vector2(0.640468, 0.640468)
+texture = ExtResource("5_3rou0")
+
+[node name="Sham-paint-thick-outline" type="Sprite2D" parent="LandingPage"]
+visible = false
+position = Vector2(995, 110)
+scale = Vector2(0.633779, 0.633779)
+texture = ExtResource("6_m21p6")
+
+[node name="ShamLabel" type="Label" parent="LandingPage"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -216.5
+offset_right = 216.5
+offset_bottom = 205.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.790168, 0.654193, 0.118521, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("7_yf6up")
+theme_override_font_sizes/font_size = 150
+text = "Sham!"
+horizontal_alignment = 1
+
+[node name="SubTitle" type="Label" parent="LandingPage"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -267.0
+offset_top = 205.0
+offset_right = 267.0
+offset_bottom = 272.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("7_y018u")
+theme_override_font_sizes/font_size = 48
+text = "Game of Cheat and Deception"
+horizontal_alignment = 1
 
 [node name="NewGame" type="Button" parent="LandingPage"]
 anchors_preset = 8
@@ -26,13 +86,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -75.0
-offset_top = -117.0
-offset_right = 75.0
-offset_bottom = -67.0
+offset_left = -141.0
+offset_top = -165.0
+offset_right = 143.0
+offset_bottom = -62.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
+theme = ExtResource("8_a3a40")
 text = "Create Lobby
 "
 
@@ -50,22 +111,8 @@ grow_horizontal = 2
 grow_vertical = 2
 placeholder_text = "Or input your join code"
 
-[node name="Label" type="Label" parent="LandingPage"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -214.0
-offset_right = 219.0
-offset_bottom = 205.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.705713, 0.65874, 0.214851, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 4
-theme_override_constants/shadow_offset_y = 5
-theme_override_font_sizes/font_size = 150
-text = "SHAM"
-
 [node name="LobbyUI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="StartGame" type="Button" parent="LobbyUI"]
 anchors_preset = 8
@@ -73,12 +120,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 17.0
-offset_top = -53.0
-offset_right = 167.0
-offset_bottom = -3.0
+offset_left = 259.0
+offset_top = -195.0
+offset_right = 472.0
+offset_bottom = -124.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_font_sizes/font_size = 20
 text = "Start Game
 "
 
@@ -87,17 +135,19 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -41.0
-offset_top = 25.0
+offset_top = 113.0
 offset_right = 41.0
-offset_bottom = 48.0
+offset_bottom = 136.0
 grow_horizontal = 2
+theme_override_font_sizes/font_size = 30
 text = "Join Code: "
 
 [node name="PlayerList" type="ItemList" parent="LobbyUI"]
-offset_left = 493.0
-offset_top = 267.0
-offset_right = 644.0
-offset_bottom = 418.0
+offset_left = 408.0
+offset_top = 264.0
+offset_right = 1125.0
+offset_bottom = 506.0
+theme_override_font_sizes/font_size = 30
 item_count = 5
 item_0/text = "Waiting..."
 item_0/selectable = false
@@ -115,6 +165,23 @@ item_4/text = "Waiting..."
 item_4/selectable = false
 item_4/disabled = true
 
+[node name="PlayerUI" type="CanvasLayer" parent="."]
+
+[node name="Player" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(985, 608)
+
+[node name="Player2" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(693, 525)
+
+[node name="Player3" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(776, 357)
+
+[node name="Player4" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(1146, 359)
+
+[node name="Player5" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+position = Vector2(1249, 523)
+
 [node name="PlayUI" type="CanvasLayer" parent="."]
 
 [node name="RankOption" type="OptionButton" parent="PlayUI"]
@@ -124,9 +191,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -193.5
-offset_top = 67.0
+offset_top = 202.0
 offset_right = 193.5
-offset_bottom = 125.0
+offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -137,33 +204,54 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -400.0
-offset_top = -213.0
+offset_top = -227.0
 offset_right = 400.0
-offset_bottom = -113.0
+offset_bottom = -127.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
 [node name="PlayCards" type="Button" parent="PlayUI"]
-offset_left = 753.0
-offset_top = 634.0
-offset_right = 903.0
-offset_bottom = 709.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 105.0
+offset_top = -125.0
+offset_right = 255.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "Play Cards"
 
 [node name="Pass" type="Button" parent="PlayUI"]
-offset_left = 592.0
-offset_top = 634.0
-offset_right = 742.0
-offset_bottom = 709.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -125.0
+offset_right = 75.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "Pass
 "
 
 [node name="CallCheat" type="Button" parent="PlayUI"]
-offset_left = 426.0
-offset_top = 634.0
-offset_right = 576.0
-offset_bottom = 709.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -258.0
+offset_top = -125.0
+offset_right = -108.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "Call Cheat"
 
 [node name="YourTurn" type="Label" parent="PlayUI"]
@@ -197,10 +285,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -65.0
-offset_top = -183.0
-offset_right = 32.0
-offset_bottom = -160.0
+offset_left = -57.0
+offset_top = -103.0
+offset_right = 40.0
+offset_bottom = -80.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -212,10 +300,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -67.0
-offset_top = -130.5
-offset_right = 41.0
-offset_bottom = -107.5
+offset_left = -59.0
+offset_top = -50.5
+offset_right = 49.0
+offset_bottom = -27.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -227,10 +315,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -63.0
-offset_top = -157.0
-offset_right = 34.0
-offset_bottom = -134.0
+offset_left = -55.0
+offset_top = -77.0
+offset_right = 42.0
+offset_bottom = -54.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -243,9 +331,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -549.0
-offset_top = -326.0
+offset_top = -414.0
 offset_right = 523.0
-offset_bottom = -185.0
+offset_bottom = -273.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.3241, 0.258944, 1)
@@ -253,24 +341,6 @@ theme_override_font_sizes/font_size = 50
 text = "Game Over!!!
 Winner is "
 horizontal_alignment = 1
-
-[node name="PlayerUI" type="CanvasLayer" parent="PlayUI"]
-visible = false
-
-[node name="Player" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(648, 334)
-
-[node name="Player2" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(356, 251)
-
-[node name="Player3" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(439, 83)
-
-[node name="Player4" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(809, 85)
-
-[node name="Player5" parent="PlayUI/PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(912, 249)
 
 [node name="UUIDLbl" type="Label" parent="PlayUI"]
 anchors_preset = 1

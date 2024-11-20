@@ -16,7 +16,7 @@ extends Node
 @onready var outPileLbl = $PlayUI/OutPileLbl
 @onready var gameOverLbl = $PlayUI/GameOverLbl
 @onready var uuidLbl = $PlayUI/UUIDLbl
-@onready var playerUI = $PlayUI/PlayerUI
+@onready var playerUI = $PlayerUI
 
 var connected = false
 var uuid = ""
@@ -32,10 +32,10 @@ var active_pile_len = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	gameOverLbl.visible = false
-	startGameBtn.visible = false
-	playerList.visible = false
 	$PlayUI.visible = false
-	playerUI.visible = false
+	$LobbyUI.visible = false
+	$PlayerUI.visible = false
+	$LandingPage.visible = true
 	rankOption.visible = false
 	yourTurnLbl.visible = your_turn
 	for rank in Card.Rank.keys():
@@ -49,31 +49,29 @@ func _process(delta: float) -> void:
 
 
 func _on_new_game_pressed() -> void:
+	$LandingPage.visible = false
 	client.connect_to_server()
 
 	connected = true
-	newGameBtn.visible = false
-	joinGameBtn.visible = false
 
 	# Send data.
 	var data = {"type": "init"}
+	$LobbyUI.visible = true
 	var send_data = await client.send(data)
 	print(send_data)
-	startGameBtn.visible = true
 
 
 func _on_join_game_text_submitted(new_text: String) -> void:
+	$LandingPage.visible = false
 	client.connect_to_server()
 
 	connected = true
-	newGameBtn.visible = false
-	joinGameBtn.visible = false
 
 	# Send data.
 	var data = {"type": "init", "join": new_text}
 	client.send(data)
-	startGameBtn.visible = true
 	startGameBtn.disabled = true
+	$LobbyUI.visible = true
 
 
 func _on_start_game_pressed() -> void:
@@ -94,7 +92,7 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 		"start":
 			var data = {"type": "start"}
 			client.send(data)
-			var playerNodes: Array = playerUI.get_children()
+			var playerNodes: Array = $PlayerUI.get_children()
 			var my_index = player_uuids.find(uuid)
 
 			# Rearrange player list around current player
@@ -109,7 +107,7 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 			print(players)
 			$LobbyUI.visible = false
 			$PlayUI.visible = true
-			playerUI.visible = true
+			$PlayerUI.visible = true
 			round_start = true
 			gameOverLbl.visible = false
 		"players":
