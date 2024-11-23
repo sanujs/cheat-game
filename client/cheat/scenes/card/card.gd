@@ -9,7 +9,7 @@ enum Rank {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KI
 @export var selected: bool = false
 
 @onready var rank_lbl: Label = $RankLbl
-@onready var suit_lbl: Label = $SuitLbl
+@onready var suit_sprite: Sprite2D = $SuitSprite
 
 var card_str: String = "AS"
 
@@ -20,15 +20,27 @@ func _set_values(_rank: Rank, _suit: Suit):
 	rank = _rank
 	suit = _suit
 
-	rank_lbl.set_text(Rank.keys()[_rank])
-	suit_lbl.set_text(Suit.keys()[_suit])
+	rank_lbl.set_text(card_str[0])
+	match _suit:
+		Suit.SPADES:
+			rank_lbl.add_theme_color_override("font_color", Color.BLACK)
+			suit_sprite.set_texture(load("res://assets/spades.svg"))
+		Suit.HEARTS:
+			rank_lbl.add_theme_color_override("font_color", Color.RED)
+			suit_sprite.set_texture(load("res://assets/hearts.svg"))
+		Suit.CLUBS:
+			rank_lbl.add_theme_color_override("font_color", Color.BLACK)
+			suit_sprite.set_texture(load("res://assets/clubs.svg"))
+		Suit.DIAMONDS:
+			rank_lbl.add_theme_color_override("font_color", Color.RED)
+			suit_sprite.set_texture(load("res://assets/diamonds.svg"))
 
 func set_values_from_string(characters: String):
 	assert(len(characters) == 2)
+	card_str = characters
 	var _rank = char_to_rank(characters[0])
 	var _suit = char_to_suit(characters[1])
 	_set_values(_rank, _suit)
-	card_str = characters
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

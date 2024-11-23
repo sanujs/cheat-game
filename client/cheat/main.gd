@@ -12,6 +12,7 @@ extends Node
 @onready var yourTurnLbl = $PlayUI/YourTurn
 @onready var roundRankLbl = $PlayUI/RoundRank
 @onready var activePileLbl = $PlayUI/ActivePileLbl
+@onready var activePile = $PlayUI/ActivePile
 @onready var discardPileLbl = $PlayUI/DiscardPileLbl
 @onready var outPileLbl = $PlayUI/OutPileLbl
 @onready var gameOverLbl = $PlayUI/GameOverLbl
@@ -139,6 +140,7 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 			# Calculate new player hand sizes from the change in active pile size
 			var num_played_cards = json_recv["active_pile"] - active_pile_len
 			active_pile_len = json_recv["active_pile"]
+			activePile.set_size(active_pile_len)
 			if json_recv.has("prev_player"):
 				players[json_recv["prev_player"]].add_cards(num_played_cards * -1)
 

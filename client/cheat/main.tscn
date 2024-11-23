@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=12 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://bohd1wf2efcrh" path="res://scenes/card/card.tscn" id="1_o6y44"]
@@ -10,6 +10,7 @@
 [ext_resource type="FontFile" uid="uid://dadpgs85xbvjx" path="res://fonts/Quintessential-Regular.ttf" id="7_y018u"]
 [ext_resource type="FontFile" uid="uid://wtq10ln4vsce" path="res://fonts/FontdinerSwanky-Regular.ttf" id="7_yf6up"]
 [ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://main_theme.tres" id="8_a3a40"]
+[ext_resource type="PackedScene" uid="uid://da5eoaiiebcqk" path="res://scenes/pile.tscn" id="11_417f3"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_2vsyr")
@@ -23,16 +24,14 @@ offset_bottom = 1080.0
 color = Color(0.277936, 0.662929, 0.346134, 1)
 
 [node name="GreenFelt" type="Sprite2D" parent="."]
-position = Vector2(987, 538)
-scale = Vector2(1.063, 0.921)
+position = Vector2(991, 540)
+scale = Vector2(1.03333, 0.905)
 texture = ExtResource("3_uaxcu")
-metadata/_edit_lock_ = true
 
 [node name="WebSocketClient" type="Node" parent="."]
 script = ExtResource("3_hmncd")
 
 [node name="LandingPage" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="Sham-paint-thick" type="Sprite2D" parent="LandingPage"]
 visible = false
@@ -112,7 +111,6 @@ grow_vertical = 2
 placeholder_text = "Or input your join code"
 
 [node name="LobbyUI" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="StartGame" type="Button" parent="LobbyUI"]
 anchors_preset = 8
@@ -204,9 +202,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -400.0
-offset_top = -227.0
+offset_top = -248.0
 offset_right = 400.0
-offset_bottom = -127.0
+offset_bottom = -148.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
@@ -351,6 +349,9 @@ offset_bottom = 23.0
 grow_horizontal = 0
 text = "UUID"
 horizontal_alignment = 2
+
+[node name="ActivePile" parent="PlayUI" instance=ExtResource("11_417f3")]
+position = Vector2(921, 346)
 
 [connection signal="message_received" from="WebSocketClient" to="." method="_on_web_socket_client_message_received"]
 [connection signal="pressed" from="LandingPage/NewGame" to="." method="_on_new_game_pressed"]
