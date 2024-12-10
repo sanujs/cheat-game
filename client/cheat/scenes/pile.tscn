@@ -1,12 +1,42 @@
-[gd_scene load_steps=3 format=3 uid="uid://da5eoaiiebcqk"]
+[gd_scene load_steps=2 format=3 uid="uid://da5eoaiiebcqk"]
 
 [ext_resource type="Script" path="res://scenes/pile.gd" id="1_fsp11"]
-[ext_resource type="Texture2D" uid="uid://bo1c5xov7r1wy" path="res://assets/pile_small.png" id="2_cog6v"]
 
 [node name="Pile" type="Node2D"]
 script = ExtResource("1_fsp11")
 
 [node name="PileSprite" type="Sprite2D" parent="."]
-position = Vector2(54, 73.2593)
-scale = Vector2(0.139276, 0.141466)
-texture = ExtResource("2_cog6v")
+position = Vector2(52.1518, 76.2591)
+scale = Vector2(0.14244, 0.143857)
+
+[node name="LblShadow" type="ColorRect" parent="PileSprite"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -543.0
+offset_top = -610.0
+offset_right = -185.0
+offset_bottom = -443.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.678431)
+
+[node name="PileLbl" type="Label" parent="PileSprite/LblShadow"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.5
+offset_top = -12.0
+offset_right = 16.5
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 125
+text = "0"
+horizontal_alignment = 1

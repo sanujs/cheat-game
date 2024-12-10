@@ -4,6 +4,7 @@ extends Node2D
 
 @export var size: int
 @onready var sprite: Sprite2D = $PileSprite
+@onready var lbl: Label = $PileSprite/LblShadow/PileLbl
 
 func set_size(_size: int) -> void:
 	if _size == 0:
@@ -18,3 +19,4 @@ func set_size(_size: int) -> void:
 		sprite.visible = true
 		sprite.set_texture(load("res://assets/pile_med.png"))
 	size = _size
+	lbl.set_text(str(_size))

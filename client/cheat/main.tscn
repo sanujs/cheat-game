@@ -22,16 +22,19 @@ offset_left = 4.0
 offset_right = 1985.0
 offset_bottom = 1080.0
 color = Color(0.277936, 0.662929, 0.346134, 1)
+metadata/_edit_lock_ = true
 
 [node name="GreenFelt" type="Sprite2D" parent="."]
 position = Vector2(991, 540)
 scale = Vector2(1.03333, 0.905)
 texture = ExtResource("3_uaxcu")
+metadata/_edit_lock_ = true
 
 [node name="WebSocketClient" type="Node" parent="."]
 script = ExtResource("3_hmncd")
 
 [node name="LandingPage" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Sham-paint-thick" type="Sprite2D" parent="LandingPage"]
 visible = false
@@ -111,6 +114,7 @@ grow_vertical = 2
 placeholder_text = "Or input your join code"
 
 [node name="LobbyUI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="StartGame" type="Button" parent="LobbyUI"]
 anchors_preset = 8
@@ -166,19 +170,19 @@ item_4/disabled = true
 [node name="PlayerUI" type="CanvasLayer" parent="."]
 
 [node name="Player" parent="PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(985, 608)
+position = Vector2(974, 652)
 
 [node name="Player2" parent="PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(693, 525)
+position = Vector2(445, 525)
 
 [node name="Player3" parent="PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(776, 357)
+position = Vector2(581, 225)
 
 [node name="Player4" parent="PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(1146, 359)
+position = Vector2(1350, 218)
 
 [node name="Player5" parent="PlayerUI" instance=ExtResource("4_3ra02")]
-position = Vector2(1249, 523)
+position = Vector2(1579, 541)
 
 [node name="PlayUI" type="CanvasLayer" parent="."]
 
@@ -283,10 +287,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -57.0
-offset_top = -103.0
-offset_right = 40.0
-offset_bottom = -80.0
+offset_left = 65.0
+offset_top = -138.0
+offset_right = 162.0
+offset_bottom = -115.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -298,10 +302,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -59.0
-offset_top = -50.5
-offset_right = 49.0
-offset_bottom = -27.5
+offset_left = 63.0
+offset_top = -85.5
+offset_right = 171.0
+offset_bottom = -62.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -313,10 +317,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -55.0
-offset_top = -77.0
-offset_right = 42.0
-offset_bottom = -54.0
+offset_left = 67.0
+offset_top = -112.0
+offset_right = 164.0
+offset_bottom = -89.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
