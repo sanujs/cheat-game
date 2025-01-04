@@ -1,12 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=10 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://bohd1wf2efcrh" path="res://scenes/card/card.tscn" id="1_o6y44"]
 [ext_resource type="Script" path="res://websocket_client.gd" id="3_hmncd"]
 [ext_resource type="Texture2D" uid="uid://bvmimx8p8nm2m" path="res://assets/green_felt.jpg" id="3_uaxcu"]
 [ext_resource type="PackedScene" uid="uid://douyuut5kwh04" path="res://scenes/player.tscn" id="4_3ra02"]
-[ext_resource type="Texture2D" uid="uid://bf7kok1avmub8" path="res://assets/SHAM-paint-thick.svg" id="5_3rou0"]
-[ext_resource type="Texture2D" uid="uid://qtts6o3i3i37" path="res://assets/sham-paint-thick-outline.svg" id="6_m21p6"]
 [ext_resource type="FontFile" uid="uid://dadpgs85xbvjx" path="res://fonts/Quintessential-Regular.ttf" id="7_y018u"]
 [ext_resource type="FontFile" uid="uid://wtq10ln4vsce" path="res://fonts/FontdinerSwanky-Regular.ttf" id="7_yf6up"]
 [ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://main_theme.tres" id="8_a3a40"]
@@ -35,18 +33,6 @@ script = ExtResource("3_hmncd")
 
 [node name="LandingPage" type="CanvasLayer" parent="."]
 visible = false
-
-[node name="Sham-paint-thick" type="Sprite2D" parent="LandingPage"]
-visible = false
-position = Vector2(995, 112)
-scale = Vector2(0.640468, 0.640468)
-texture = ExtResource("5_3rou0")
-
-[node name="Sham-paint-thick-outline" type="Sprite2D" parent="LandingPage"]
-visible = false
-position = Vector2(995, 110)
-scale = Vector2(0.633779, 0.633779)
-texture = ExtResource("6_m21p6")
 
 [node name="ShamLabel" type="Label" parent="LandingPage"]
 anchors_preset = 5
