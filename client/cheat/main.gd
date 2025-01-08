@@ -118,8 +118,8 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 			playerList.visible = true
 		"setup":
 			var hand_length: int = len(json_recv["hand"])
-			for uuid in player_uuids:
-				players[uuid].set_hand_size(hand_length)
+			for player_uuid in player_uuids:
+				players[player_uuid].set_hand_size(hand_length)
 			update_hand(json_recv["hand"])
 			discardPileLbl.set_text("Discard Pile: " + str(json_recv["discard_pile"]))
 		"hand":
@@ -175,11 +175,7 @@ func add_card_to_hand(card_string: String) -> void:
 func _on_play_cards_pressed() -> void:
 	if not your_turn:
 		return
-	var played_cards = []
-	for card: Card in hand.cards:
-		if card.selected:
-			played_cards.append(card.card_str)
-			hand.remove_card(card)
+	var played_cards = hand.play_selected_cards()
 	if round_start:
 		round_rank = Card.Rank[rankOption.get_item_text(rankOption.selected)]
 	var data = {

@@ -8,6 +8,15 @@ extends Node2D
 @export var max_card_spread_angle: float = 5
 
 var cards: Array = []
+var selected_cards: Array = []
+
+func play_selected_cards() -> Array:
+	var selected_card_strings = []
+	for card: Card in selected_cards:
+		selected_card_strings.append(card.card_str)
+		remove_card(card)
+	selected_cards.clear()
+	return selected_card_strings
 
 func add_card(new_card: Control):
 	cards.append(new_card)
@@ -15,7 +24,7 @@ func add_card(new_card: Control):
 	reposition_cards()
 	
 func remove_card(card: Control):
-	cards.remove_at(cards.find(card))
+	cards.erase(card)
 	remove_child(card)
 	reposition_cards()
 	
@@ -40,4 +49,8 @@ func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
-	pass
+	for card: Card in cards:
+		if card.selected and not selected_cards.has(card):
+			selected_cards.append(card)
+		elif not card.selected:
+			selected_cards.erase(card)
