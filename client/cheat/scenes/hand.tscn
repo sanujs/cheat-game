@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://n8vfd3ncsak"]
+
+[ext_resource type="Script" path="res://hand.gd" id="1_jn5df"]
+
+[node name="Hand" type="Node2D"]
+position = Vector2(1019, 2197)
+script = ExtResource("1_jn5df")
+hand_radius = 1405

@@ -8,6 +8,7 @@
 size = Vector2(74.6873, 100.5)
 
 [node name="Card" type="Control"]
+visible = false
 custom_minimum_size = Vector2(75, 100)
 layout_mode = 3
 anchors_preset = 15
