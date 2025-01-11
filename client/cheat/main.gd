@@ -1,6 +1,6 @@
 extends Node
 
-@export var card_scene: PackedScene = preload("res://scenes/card/card.tscn")
+@export var card_scene: PackedScene
 @onready var client: WebSocketClient = $WebSocketClient
 @onready var hand: Hand = $PlayUI/Hand
 @onready var startGameBtn = $LobbyUI/StartGame

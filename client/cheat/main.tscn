@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=11 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
+[ext_resource type="PackedScene" uid="uid://ci06c270f0q8a" path="res://scenes/card/card.tscn" id="2_hmpoj"]
 [ext_resource type="Script" path="res://websocket_client.gd" id="3_hmncd"]
 [ext_resource type="Texture2D" uid="uid://bvmimx8p8nm2m" path="res://assets/green_felt.jpg" id="3_uaxcu"]
 [ext_resource type="PackedScene" uid="uid://douyuut5kwh04" path="res://scenes/player.tscn" id="4_3ra02"]
@@ -12,6 +13,7 @@
 
 [node name="Main" type="Node"]
 script = ExtResource("1_2vsyr")
+card_scene = ExtResource("2_hmpoj")
 
 [node name="Background" type="ColorRect" parent="."]
 visible = false
@@ -177,15 +179,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -193.5
-offset_top = 202.0
-offset_right = 193.5
-offset_bottom = 260.0
+offset_left = -893.0
+offset_top = 107.0
+offset_right = -506.0
+offset_bottom = 165.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Hand" parent="PlayUI" instance=ExtResource("10_0rnff")]
-position = Vector2(990, 2197)
+position = Vector2(990, 2800)
 
 [node name="PlayCards" type="Button" parent="PlayUI"]
 anchors_preset = 7

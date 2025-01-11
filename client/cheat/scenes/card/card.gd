@@ -1,39 +1,47 @@
+@tool
 class_name Card
-extends Control
+extends Node2D
 
 enum Suit {SPADES, HEARTS, CLUBS, DIAMONDS}
-enum Rank {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE}
+enum Rank {ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING}
 
+signal clicked(card: Card)
+signal mouse_entered(card: Card)
+signal mouse_exited(card: Card)
+
+@onready var card_front: Sprite2D = $CardFrontSprite
 @export var rank: Rank = Rank.ACE
 @export var suit: Suit = Suit.SPADES
 @export var selected: bool = false
 
-@onready var rank_lbl: Label = $RankLbl
-@onready var suit_sprite: Sprite2D = $SuitSprite
-
 var card_str: String = "AS"
+var highlighted: bool = false
 
 func _ready() -> void:
-	visible = false
+	pass
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	$Flag2.visible = selected
+	$Flag.visible = highlighted
 
 func _set_values(_rank: Rank, _suit: Suit):
 	rank = _rank
 	suit = _suit
+	
+	var asset_filename = "res://assets/card_fronts/"
 
-	rank_lbl.set_text(card_str[0])
 	match _suit:
 		Suit.SPADES:
-			rank_lbl.add_theme_color_override("font_color", Color.BLACK)
-			suit_sprite.set_texture(load("res://assets/spades.svg"))
+			asset_filename += "SPADE"
 		Suit.HEARTS:
-			rank_lbl.add_theme_color_override("font_color", Color.RED)
-			suit_sprite.set_texture(load("res://assets/hearts.svg"))
+			asset_filename += "HEART"
 		Suit.CLUBS:
-			rank_lbl.add_theme_color_override("font_color", Color.BLACK)
-			suit_sprite.set_texture(load("res://assets/clubs.svg"))
+			asset_filename += "CLUB"
 		Suit.DIAMONDS:
-			rank_lbl.add_theme_color_override("font_color", Color.RED)
-			suit_sprite.set_texture(load("res://assets/diamonds.svg"))
+			asset_filename += "DIAMOND"
+	asset_filename += "-" + str(_rank+1) + ".svg"
+	card_front.set_texture(load(asset_filename))
 
 func set_values_from_string(characters: String):
 	assert(len(characters) == 2)
@@ -41,18 +49,6 @@ func set_values_from_string(characters: String):
 	var _rank = char_to_rank(characters[0])
 	var _suit = char_to_suit(characters[1])
 	_set_values(_rank, _suit)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	if selected:
-		$Color.color = Color.AQUA
-	else:
-		$Color.set_color(Color.WHITE)
-
-func _gui_input(event: InputEvent) -> void:
-#	Affects current control only
-	if event.is_action_pressed("left_mouse"):
-		selected = not selected
 
 func _input(event: InputEvent) -> void:
 #	Affects all controls
@@ -80,7 +76,7 @@ static func char_to_rank(character: String) -> Rank:
 				return Rank.ACE
 
 #	calculate the Rank enum equivalent to the number
-	return int(character)-2 as Rank
+	return int(character)-1 as Rank
 
 func char_to_suit(character: String) -> Suit:
 	assert(len(character) == 1)
@@ -121,3 +117,25 @@ static func rank_to_char(_rank: Rank) -> String:
 		Rank.NINE:
 			return "9"
 	return ""
+
+
+func highlight():
+	highlighted = true
+	#$Flag.visible = true
+	
+func unhighlight():
+	highlighted = false
+	#$Flag.visible = false
+
+func select_card():
+	selected = not selected
+
+func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event.is_action_pressed("left_mouse"):
+		clicked.emit(self)
+
+func _on_area_2d_mouse_entered() -> void:
+	mouse_entered.emit(self)
+
+func _on_area_2d_mouse_exited() -> void:
+	mouse_exited.emit(self)
