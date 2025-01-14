@@ -1,4 +1,3 @@
-@tool
 extends Node2D
 @export var card_scene: PackedScene = preload("res://scenes/card/card.tscn")
 @onready var hand = $Hand

@@ -1,4 +1,3 @@
-@tool
 class_name Card
 extends Node2D
 
@@ -51,7 +50,7 @@ func set_values_from_string(characters: String):
 	_set_values(_rank, _suit)
 
 func _input(event: InputEvent) -> void:
-#	Affects all controls
+#	Affects all cards
 	if event.is_action_pressed("right_mouse"):
 		selected = false
 
@@ -97,7 +96,7 @@ func char_to_suit(character: String) -> Suit:
 
 static func rank_to_char(_rank: Rank) -> String:
 #	the char representation is the first character in ranks ten to ace
-	if _rank > 7:
+	if _rank > 8 or _rank == 0:
 		return Rank.keys()[_rank][0]
 	match _rank:
 		Rank.TWO:
@@ -121,11 +120,9 @@ static func rank_to_char(_rank: Rank) -> String:
 
 func highlight():
 	highlighted = true
-	#$Flag.visible = true
-	
+
 func unhighlight():
 	highlighted = false
-	#$Flag.visible = false
 
 func select_card():
 	selected = not selected
