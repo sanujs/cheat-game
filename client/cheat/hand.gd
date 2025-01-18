@@ -2,6 +2,7 @@ class_name Hand
 extends Node2D
 
 @export var hand_radius: int = 2000 # Change to const
+@export var selected_radius: int = 100
 @export var card_location_angle: int = -90
 @export var card_scene: PackedScene
 @export var angle_limit: float = 25
@@ -43,20 +44,24 @@ func reposition_cards():
 		_update_card_transform(card, current_angle)
 		current_angle += card_spread
 
-func _get_card_position(angle_in_deg: float) -> Vector2:
-	var x: float = hand_radius * cos(deg_to_rad(angle_in_deg))
-	var y: float = hand_radius * sin(deg_to_rad(angle_in_deg))
+func _get_card_position(angle_in_deg: float, selected: bool) -> Vector2:
+	var card_radius = hand_radius + selected_radius if selected else hand_radius
+	var x: float = card_radius * cos(deg_to_rad(angle_in_deg))
+	var y: float = card_radius * sin(deg_to_rad(angle_in_deg))
 
 	return Vector2(int(x), int(y))
 
 func _update_card_transform(card: Node2D, angle_in_deg: float):
-	card.set_position(_get_card_position(angle_in_deg))
+	var selected = selected_cards.has(card)
+	card.set_position(_get_card_position(angle_in_deg, selected))
 	card.set_rotation(deg_to_rad(angle_in_deg + 90))
 	
 func _handle_card_touched(card: Card):
-	for touched_card in touched_cards:
-		cards[touched_card].unhighlight()
 	touched_cards.append(cards.find(card))
+	var keep_highlighted = touched_cards.max()
+	for touched_card in touched_cards:
+		if touched_card != keep_highlighted:
+			cards[touched_card].unhighlight()
 
 func _handle_card_untouched(card: Card):
 	var card_index = cards.find(card)
@@ -83,6 +88,7 @@ func _process(delta: float) -> void:
 			selected_cards.append(card)
 		elif not card.selected:
 			selected_cards.erase(card)
+		reposition_cards()
 	#	Debugging circle radius
 	if debugcircle and (debugcircle.shape as CircleShape2D).radius != hand_radius:
 		(debugcircle.shape as CircleShape2D).set_radius(hand_radius)

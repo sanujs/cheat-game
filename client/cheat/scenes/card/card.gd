@@ -9,6 +9,7 @@ signal mouse_entered(card: Card)
 signal mouse_exited(card: Card)
 
 @onready var card_front: Sprite2D = $CardFrontSprite
+@onready var animation: AnimationPlayer = $AnimationPlayer
 @export var rank: Rank = Rank.ACE
 @export var suit: Suit = Suit.SPADES
 @export var selected: bool = false
@@ -21,8 +22,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	$Flag2.visible = selected
-	$Flag.visible = highlighted
+	pass
 
 func _set_values(_rank: Rank, _suit: Suit):
 	rank = _rank
@@ -119,9 +119,13 @@ static func rank_to_char(_rank: Rank) -> String:
 
 
 func highlight():
+	if !highlighted:
+		animation.play("hover")
 	highlighted = true
 
 func unhighlight():
+	if highlighted:
+		animation.play_backwards("hover")
 	highlighted = false
 
 func select_card():
