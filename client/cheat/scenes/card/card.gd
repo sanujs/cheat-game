@@ -14,15 +14,30 @@ signal mouse_exited(card: Card)
 @export var suit: Suit = Suit.SPADES
 @export var selected: bool = false
 
+const SPEED: int = 8
 var card_str: String = "AS"
 var highlighted: bool = false
+var t: float = 1.0
+var start_position: Vector2
+var end_position: Vector2
 
 func _ready() -> void:
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+#	Card click linear interpolation
+	if t < 1.0:
+		t += delta * SPEED
+		self.position = start_position.lerp(end_position, t)
+
+func select_card(new_position: Vector2):
+	selected = not selected
+#	Linear interpolation parameters
+	start_position = position
+	end_position = new_position
+#	Setting t<1 triggers interpolation
+	t = 0.0
 
 func _set_values(_rank: Rank, _suit: Suit):
 	rank = _rank
@@ -48,11 +63,6 @@ func set_values_from_string(characters: String):
 	var _rank = char_to_rank(characters[0])
 	var _suit = char_to_suit(characters[1])
 	_set_values(_rank, _suit)
-
-func _input(event: InputEvent) -> void:
-#	Affects all cards
-	if event.is_action_pressed("right_mouse"):
-		selected = false
 
 static func char_to_rank(character: String) -> Rank:
 	assert(len(character) == 1)
@@ -127,9 +137,6 @@ func unhighlight():
 	if highlighted:
 		animation.play_backwards("hover")
 	highlighted = false
-
-func select_card():
-	selected = not selected
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event.is_action_pressed("left_mouse"):

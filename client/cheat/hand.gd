@@ -23,39 +23,53 @@ func play_selected_cards() -> Array:
 	selected_cards.clear()
 	return selected_card_strings
 
-func add_card(new_card: Node2D):
+func add_card(new_card: Card):
 	cards.append(new_card)
 	add_child(new_card)
 	new_card.mouse_entered.connect(_handle_card_touched)
 	new_card.mouse_exited.connect(_handle_card_untouched)
 	new_card.clicked.connect(_handle_card_click)
-	reposition_cards()
 	new_card.visible = true
 	
-func remove_card(card: Node2D):
+func remove_card(card: Card):
 	cards.erase(card)
 	remove_child(card)
-	reposition_cards()
 	
-func reposition_cards():
+func reposition_cards(delta: float):
 	var card_spread = min(angle_limit / cards.size(), max_card_spread_angle)
 	var current_angle = -90 - (card_spread * (cards.size() - 1))/2
 	for card in cards:
-		_update_card_transform(card, current_angle)
+		_update_card_transform(delta, card, current_angle)
 		current_angle += card_spread
 
-func _get_card_position(angle_in_deg: float, selected: bool) -> Vector2:
-	var card_radius = hand_radius + selected_radius if selected else hand_radius
-	var x: float = card_radius * cos(deg_to_rad(angle_in_deg))
-	var y: float = card_radius * sin(deg_to_rad(angle_in_deg))
-
-	return Vector2(int(x), int(y))
-
-func _update_card_transform(card: Node2D, angle_in_deg: float):
+func _update_card_transform(delta: float, card: Card, angle_in_deg: float):
 	var selected = selected_cards.has(card)
 	card.set_position(_get_card_position(angle_in_deg, selected))
 	card.set_rotation(deg_to_rad(angle_in_deg + 90))
-	
+
+func _get_card_position(angle_in_deg: float, selected: bool) -> Vector2:
+	var card_radius = _get_card_radius(selected)
+	var x: float = card_radius * cos(deg_to_rad(angle_in_deg))
+	var y: float = card_radius * sin(deg_to_rad(angle_in_deg))
+	return Vector2(int(x), int(y))
+
+func _get_card_radius(selected: bool) -> int:
+	return hand_radius + selected_radius if selected else hand_radius
+
+func _input(event: InputEvent) -> void:
+#	Affects all cards
+	if event.is_action_pressed("right_mouse"):
+		for card in selected_cards:
+#			Using the inverse of card.selected because we are about to change it
+			var end_position_magnitude = _get_card_radius(!card.selected)
+			card.select_card(card.get_position().normalized() * end_position_magnitude)
+
+func _handle_card_click(card: Card):
+	if card.highlighted:
+#		Using the inverse of card.selected because we are about to change it
+		var end_position_magnitude = _get_card_radius(!card.selected)
+		card.select_card(card.get_position().normalized() * end_position_magnitude)
+
 func _handle_card_touched(card: Card):
 	touched_cards.append(cards.find(card))
 	var keep_highlighted = touched_cards.max()
@@ -69,11 +83,6 @@ func _handle_card_untouched(card: Card):
 	card.unhighlight()
 	if highlight_index == card_index:
 		highlight_index = -1
-		
-		
-func _handle_card_click(card: Card):
-	if card.highlighted:
-		card.select_card()
 
 func _ready() -> void:
 	pass
@@ -88,7 +97,7 @@ func _process(delta: float) -> void:
 			selected_cards.append(card)
 		elif not card.selected:
 			selected_cards.erase(card)
-		reposition_cards()
+		reposition_cards(delta)
 	#	Debugging circle radius
 	if debugcircle and (debugcircle.shape as CircleShape2D).radius != hand_radius:
 		(debugcircle.shape as CircleShape2D).set_radius(hand_radius)
