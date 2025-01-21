@@ -2,7 +2,7 @@ extends Node
 
 @export var card_scene: PackedScene
 @onready var client: WebSocketClient = $WebSocketClient
-@onready var hand = $PlayUI/Hand
+@onready var hand: Hand = $PlayUI/Hand
 @onready var startGameBtn = $LobbyUI/StartGame
 @onready var newGameBtn = $LandingPage/NewGame
 @onready var joinGameBtn = $LandingPage/JoinGame
@@ -118,8 +118,8 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 			playerList.visible = true
 		"setup":
 			var hand_length: int = len(json_recv["hand"])
-			for uuid in player_uuids:
-				players[uuid].set_hand_size(hand_length)
+			for player_uuid in player_uuids:
+				players[player_uuid].set_hand_size(hand_length)
 			update_hand(json_recv["hand"])
 			discardPileLbl.set_text("Discard Pile: " + str(json_recv["discard_pile"]))
 		"hand":
@@ -159,7 +159,7 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 
 
 func update_hand(new_hand: Array) -> void:
-	var current_hand = hand.get_children().map(func(card): return card.card_str)
+	var current_hand = hand.cards.map(func(card): return card.card_str)
 	for card_str in new_hand:
 		if not current_hand.has(card_str):
 			add_card_to_hand(card_str)
@@ -167,7 +167,7 @@ func update_hand(new_hand: Array) -> void:
 
 func add_card_to_hand(card_string: String) -> void:
 	var new_card: Card = card_scene.instantiate()
-	hand.add_child(new_card)
+	hand.add_card(new_card)
 	new_card.set_values_from_string(card_string)
 	new_card.visible = true
 
@@ -175,11 +175,7 @@ func add_card_to_hand(card_string: String) -> void:
 func _on_play_cards_pressed() -> void:
 	if not your_turn:
 		return
-	var played_cards = []
-	for card: Card in hand.get_children():
-		if card.selected:
-			played_cards.append(card.card_str)
-			hand.remove_child(card)
+	var played_cards = hand.play_selected_cards()
 	if round_start:
 		round_rank = Card.Rank[rankOption.get_item_text(rankOption.selected)]
 	var data = {
