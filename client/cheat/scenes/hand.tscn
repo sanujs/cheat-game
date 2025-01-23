@@ -10,7 +10,6 @@ radius = 2000.0
 position = Vector2(1008, 2377)
 script = ExtResource("1_jn5df")
 card_scene = ExtResource("2_5by51")
-angle_limit = 45.0
 
 [node name="DebugArea" type="Area2D" parent="."]
 

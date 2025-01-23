@@ -24,6 +24,7 @@ color = Color(0.277936, 0.662929, 0.346134, 1)
 metadata/_edit_lock_ = true
 
 [node name="GreenFelt" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(991, 540)
 scale = Vector2(1.03333, 0.905)
 texture = ExtResource("3_uaxcu")

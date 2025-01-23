@@ -6,6 +6,7 @@ extends Node2D
 
 @onready var nameLbl = $NameLabel
 @onready var handSizeLbl = $HandSizeLabel
+@onready var playerHand = $PlayerHand
 
 
 func set_player_name(name: String) -> void:
@@ -18,3 +19,7 @@ func set_hand_size(size: int) -> void:
 func add_cards(num: int) -> void:
 	hand_size += num
 	handSizeLbl.set_text(str(hand_size))
+
+func _process(delta: float) -> void:
+	if hand_size != playerHand.hand_size:
+		playerHand.set_hand_size(hand_size)

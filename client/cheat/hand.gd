@@ -35,14 +35,14 @@ func remove_card(card: Card):
 	cards.erase(card)
 	remove_child(card)
 	
-func reposition_cards(delta: float):
+func reposition_cards():
 	var card_spread = min(angle_limit / cards.size(), max_card_spread_angle)
 	var current_angle = -90 - (card_spread * (cards.size() - 1))/2
 	for card in cards:
-		_update_card_transform(delta, card, current_angle)
+		_update_card_transform(card, current_angle)
 		current_angle += card_spread
 
-func _update_card_transform(delta: float, card: Card, angle_in_deg: float):
+func _update_card_transform(card: Card, angle_in_deg: float):
 	var selected = selected_cards.has(card)
 	card.set_position(_get_card_position(angle_in_deg, selected))
 	card.set_rotation(deg_to_rad(angle_in_deg + 90))
@@ -97,7 +97,7 @@ func _process(delta: float) -> void:
 			selected_cards.append(card)
 		elif not card.selected:
 			selected_cards.erase(card)
-		reposition_cards(delta)
+		reposition_cards()
 	#	Debugging circle radius
 	if debugcircle and (debugcircle.shape as CircleShape2D).radius != hand_radius:
 		(debugcircle.shape as CircleShape2D).set_radius(hand_radius)
