@@ -6,6 +6,9 @@ extends Node2D
 @onready var sprite: Sprite2D = $PileSprite
 @onready var lbl: Label = $PileSprite/LblShadow/PileLbl
 
+func get_size() -> int:
+	return size
+
 func set_size(_size: int) -> void:
 	if _size == 0:
 		sprite.visible = false
