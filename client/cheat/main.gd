@@ -112,6 +112,7 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 			round_start = true
 			gameOverLbl.visible = false
 		"players":
+			# Update player list when a new player joins
 			player_uuids = json_recv["players"]
 			for i in range(player_uuids.size()):
 				playerList.set_item_text(i, player_uuids[i])
@@ -126,6 +127,10 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 			update_hand(json_recv["hand"])
 		"turn":
 			print(json_recv["player"] + "'s turn")
+
+			# Identify who's turn it is
+			for player_uuid: String in players:
+				players[player_uuid].change_turn(json_recv["player"] == player_uuid)
 
 			if json_recv.get("round_start"):
 				round_start = true
@@ -145,16 +150,13 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 
 			if json_recv.has("prev_player"):
 				players[json_recv["prev_player"]].add_cards(num_played_cards * -1)
-				players[json_recv["prev_player"]].change_turn(false)
 
 			if json_recv["player"] == uuid:
 				your_turn = true
 				if round_start:
 					rankOption.visible = true
-				players[json_recv["player"]].change_turn(true)
 			else:
 				your_turn = false
-				players[json_recv["player"]].change_turn(false)
 			
 			if json_recv.has("out_pile"):
 				outPileLbl.set_text("Out Pile: " + str(json_recv["out_pile"]))

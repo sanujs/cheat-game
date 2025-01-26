@@ -10,12 +10,11 @@ extends Node2D
 @onready var avatar = $Avatar
 
 func change_turn(new_turn: bool) -> void:
-	if !new_turn:
-		avatar.set_texture(load("res://assets/avatar-1.svg"))
-		turn = false
-	else:
+	turn = new_turn
+	if new_turn:
 		avatar.set_texture(load("res://assets/avatar-2.svg"))
-		turn = true
+	else:
+		avatar.set_texture(load("res://assets/avatar-1.svg"))
 
 func set_player_name(name: String) -> void:
 	nameLbl.set_text(name)
