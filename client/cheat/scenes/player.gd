@@ -7,7 +7,14 @@ extends Node2D
 @onready var nameLbl = $NameLabel
 @onready var handSizeLbl = $HandSizeLabel
 @onready var playerHand = $PlayerHand
+@onready var avatar = $Avatar
 
+func change_turn(new_turn: bool) -> void:
+	turn = new_turn
+	if new_turn:
+		avatar.set_texture(load("res://assets/avatar-2.svg"))
+	else:
+		avatar.set_texture(load("res://assets/avatar-1.svg"))
 
 func set_player_name(name: String) -> void:
 	nameLbl.set_text(name)
@@ -23,3 +30,6 @@ func add_cards(num: int) -> void:
 func _process(delta: float) -> void:
 	if hand_size != playerHand.hand_size:
 		playerHand.set_hand_size(hand_size)
+
+func _ready() -> void:
+	visible = false

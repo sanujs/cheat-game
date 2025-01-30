@@ -27,14 +27,14 @@ async def play(
     hand = game.players[uuid].hand_to_str()
     event = {"type": "setup", "hand": hand, "discard_pile": len(game.discard_pile)}
     await websocket.send(json.dumps(event))
-    if game.current_turn_player.uuid == uuid:
-        event = {
-            "type": "turn",
-            "player": str(game.current_turn_player.uuid),
-            "round_start": True,
-            "active_pile": len(game.active_pile),
-        }
-        await websocket.send(json.dumps(event))
+    # if game.current_turn_player.uuid == uuid:
+    event = {
+        "type": "turn",
+        "player": str(game.current_turn_player.uuid),
+        "round_start": True,
+        "active_pile": len(game.active_pile),
+    }
+    broadcast(connected, json.dumps(event))
     async for message in websocket:
         event = json.loads(message)
         print(f"Received {event["type"]} from {uuid}")

@@ -158,18 +158,23 @@ item_4/disabled = true
 [node name="PlayerUI" type="CanvasLayer" parent="."]
 
 [node name="Player" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+visible = false
 position = Vector2(974, 652)
 
 [node name="Player2" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+visible = false
 position = Vector2(445, 525)
 
 [node name="Player3" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+visible = false
 position = Vector2(581, 225)
 
 [node name="Player4" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+visible = false
 position = Vector2(1350, 218)
 
 [node name="Player5" parent="PlayerUI" instance=ExtResource("4_3ra02")]
+visible = false
 position = Vector2(1579, 541)
 
 [node name="PlayUI" type="CanvasLayer" parent="."]
