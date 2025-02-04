@@ -2,6 +2,7 @@ import asyncio
 import json
 from websockets.asyncio.server import serve, ServerConnection, broadcast
 import secrets
+import ssl
 
 from game.deck.rank import Rank
 from game.game import CheatGame
@@ -183,9 +184,11 @@ async def handler(websocket: ServerConnection):
         # First player starts a new game.
         await start(websocket)
 
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+context.load_cert_chain('/etc/letsencrypt/live/cheat-server.sudokusos.com/fullchain.pem', '/etc/letsencrypt/live/cheat-server.sudokusos.com/privkey.pem')
 
 async def main():
-    async with serve(handler, "", 8001):
+    async with serve(handler, "", 8001, ssl=context):
         await asyncio.get_running_loop().create_future()  # run forever
 
 

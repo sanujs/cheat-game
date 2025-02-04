@@ -1,7 +1,8 @@
 class_name WebSocketClient
 extends Node
 
-@export var websocket_url = "ws://localhost:8001/"
+@export var websocket_url = "wss://cheat-server.sudokusos.com"
+#@export var websocket_url = "wss://localhost:8001/"
 
 var socket = WebSocketPeer.new()
 var connected = false
