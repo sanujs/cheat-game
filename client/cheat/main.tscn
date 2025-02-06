@@ -16,11 +16,10 @@ script = ExtResource("1_2vsyr")
 card_scene = ExtResource("2_hmpoj")
 
 [node name="Background" type="ColorRect" parent="."]
-visible = false
 offset_left = 4.0
 offset_right = 1985.0
 offset_bottom = 1080.0
-color = Color(0.277936, 0.662929, 0.346134, 1)
+color = Color(0.0701217, 0.170539, 0.318628, 1)
 metadata/_edit_lock_ = true
 
 [node name="GreenFelt" type="Sprite2D" parent="."]
@@ -62,7 +61,7 @@ offset_top = 205.0
 offset_right = 267.0
 offset_bottom = 272.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 5
 theme_override_fonts/font = ExtResource("7_y018u")
