@@ -17,9 +17,9 @@ script = ExtResource("1_2vsyr")
 card_scene = ExtResource("2_hmpoj")
 
 [node name="Background" type="ColorRect" parent="."]
-offset_left = 4.0
-offset_right = 1985.0
+offset_right = 1981.0
 offset_bottom = 1080.0
+mouse_filter = 2
 color = Color(0.0701217, 0.170539, 0.318628, 1)
 metadata/_edit_lock_ = true
 
