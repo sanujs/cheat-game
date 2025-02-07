@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=12 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://ci06c270f0q8a" path="res://scenes/card/card.tscn" id="2_hmpoj"]
@@ -8,6 +8,7 @@
 [ext_resource type="FontFile" uid="uid://dadpgs85xbvjx" path="res://fonts/Quintessential-Regular.ttf" id="7_y018u"]
 [ext_resource type="FontFile" uid="uid://wtq10ln4vsce" path="res://fonts/FontdinerSwanky-Regular.ttf" id="7_yf6up"]
 [ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://main_theme.tres" id="8_a3a40"]
+[ext_resource type="Texture2D" uid="uid://bs4i73cdnq0gi" path="res://assets/copy_icon_white.svg" id="8_f6d71"]
 [ext_resource type="PackedScene" uid="uid://n8vfd3ncsak" path="res://scenes/hand.tscn" id="10_0rnff"]
 [ext_resource type="PackedScene" uid="uid://da5eoaiiebcqk" path="res://scenes/pile.tscn" id="11_417f3"]
 
@@ -130,6 +131,14 @@ offset_bottom = 136.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 30
 text = "Join Code: "
+
+[node name="CopyJoinCode" type="Button" parent="LobbyUI"]
+offset_left = 1173.0
+offset_top = 110.0
+offset_right = 1629.0
+offset_bottom = 630.0
+scale = Vector2(0.084, 0.084)
+icon = ExtResource("8_f6d71")
 
 [node name="PlayerList" type="ItemList" parent="LobbyUI"]
 offset_left = 408.0
@@ -342,6 +351,7 @@ position = Vector2(921, 346)
 [connection signal="pressed" from="LandingPage/NewGame" to="." method="_on_new_game_pressed"]
 [connection signal="text_submitted" from="LandingPage/JoinGame" to="." method="_on_join_game_text_submitted"]
 [connection signal="pressed" from="LobbyUI/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="LobbyUI/CopyJoinCode" to="." method="_on_copy_join_code_pressed"]
 [connection signal="pressed" from="PlayUI/PlayCards" to="." method="_on_play_cards_pressed"]
 [connection signal="pressed" from="PlayUI/Pass" to="." method="_on_pass_pressed"]
 [connection signal="pressed" from="PlayUI/CallCheat" to="." method="_on_call_cheat_pressed"]

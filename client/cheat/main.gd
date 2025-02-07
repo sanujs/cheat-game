@@ -212,3 +212,8 @@ func _on_pass_pressed() -> void:
 		"type": "pass"
 	}
 	client.send(data)
+
+
+func _on_copy_join_code_pressed() -> void:
+	DisplayServer.clipboard_set(join_key)
+	print("Text copied to clipboard!")
