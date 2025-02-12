@@ -1,4 +1,13 @@
-[gd_resource type="Theme" format=3 uid="uid://d1fhtyedr8xvc"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://d1fhtyedr8xvc"]
+
+[ext_resource type="FontFile" uid="uid://qex8tcby6oor" path="res://fonts/Onest-Regular.ttf" id="1_tvkel"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kh5ox"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_362es"]
 
 [resource]
-Button/font_sizes/font_size = 30
+Button/font_sizes/font_size = 45
+Button/fonts/font = ExtResource("1_tvkel")
+Button/styles/focus = SubResource("StyleBoxEmpty_kh5ox")
+Button/styles/normal = SubResource("StyleBoxEmpty_362es")

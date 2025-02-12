@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=11 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://ci06c270f0q8a" path="res://scenes/card/card.tscn" id="2_hmpoj"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://douyuut5kwh04" path="res://scenes/player.tscn" id="4_3ra02"]
 [ext_resource type="FontFile" uid="uid://dadpgs85xbvjx" path="res://fonts/Quintessential-Regular.ttf" id="7_y018u"]
 [ext_resource type="FontFile" uid="uid://wtq10ln4vsce" path="res://fonts/FontdinerSwanky-Regular.ttf" id="7_yf6up"]
-[ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://main_theme.tres" id="8_a3a40"]
 [ext_resource type="Texture2D" uid="uid://bs4i73cdnq0gi" path="res://assets/copy_icon_white.svg" id="8_f6d71"]
 [ext_resource type="PackedScene" uid="uid://n8vfd3ncsak" path="res://scenes/hand.tscn" id="10_0rnff"]
 [ext_resource type="PackedScene" uid="uid://da5eoaiiebcqk" path="res://scenes/pile.tscn" id="11_417f3"]
@@ -34,7 +33,6 @@ metadata/_edit_lock_ = true
 script = ExtResource("3_hmncd")
 
 [node name="LandingPage" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="ShamLabel" type="Label" parent="LandingPage"]
 anchors_preset = 5
@@ -83,7 +81,6 @@ offset_bottom = -62.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
-theme = ExtResource("8_a3a40")
 text = "Create Lobby
 "
 

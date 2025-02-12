@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6ncoaqxokmpx"]
+
+[ext_resource type="Script" path="res://title_screen.gd" id="1_y7o3b"]
+[ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://main_theme.tres" id="2_0ngnq"]
+[ext_resource type="FontFile" uid="uid://d017b5exh2gi0" path="res://fonts/Quicksand-SemiBold.ttf" id="3_q8i5a"]
+[ext_resource type="PackedScene" uid="uid://n8vfd3ncsak" path="res://scenes/hand.tscn" id="4_a02u5"]
+[ext_resource type="PackedScene" uid="uid://ci06c270f0q8a" path="res://scenes/card/card.tscn" id="5_qowsr"]
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_y7o3b")
+card_scene = ExtResource("5_qowsr")
+metadata/_edit_lock_ = true
+
+[node name="Background" type="ColorRect" parent="."]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 1981.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0.318375, 0.0276087, 0.0695862, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 453.0
+offset_right = 446.0
+offset_bottom = 589.0
+theme_override_constants/separation = 20
+
+[node name="Create" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_0ngnq")
+text = "Create Lobby"
+alignment = 0
+
+[node name="Join" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_0ngnq")
+text = "Join Lobby"
+alignment = 0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 114.0
+offset_top = 45.0
+offset_right = 385.0
+offset_bottom = 170.0
+theme_override_fonts/font = ExtResource("3_q8i5a")
+theme_override_font_sizes/font_size = 150
+text = "Sham"
+
+[node name="Hand" parent="." instance=ExtResource("4_a02u5")]
+position = Vector2(1185, 2446)
