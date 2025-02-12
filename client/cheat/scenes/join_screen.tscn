@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b05vf676xxuke" path="res://scenes/background.tscn" id="2_msaxu"]
 [ext_resource type="Texture2D" uid="uid://bagjtqkqm0rpy" path="res://assets/back_arrow.svg" id="2_ok7s5"]
 [ext_resource type="Theme" uid="uid://b1rxna748pd04" path="res://themes/icon_button.tres" id="3_huyin"]
-[ext_resource type="Texture2D" uid="uid://bs4i73cdnq0gi" path="res://assets/copy_icon_white.svg" id="6_mxfrf"]
+[ext_resource type="Texture2D" uid="uid://1tvnv2o8m6uu" path="res://assets/paste.svg" id="6_awn67"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ss1nt"]
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.729412)
@@ -43,15 +43,15 @@ theme = ExtResource("3_huyin")
 icon = ExtResource("2_ok7s5")
 icon_alignment = 1
 
-[node name="CopyJoinCode" type="Button" parent="."]
+[node name="PasteJoinCode" type="Button" parent="."]
 layout_mode = 0
 offset_left = 1281.0
 offset_top = 239.0
-offset_right = 2019.0
-offset_bottom = 953.0
+offset_right = 2081.0
+offset_bottom = 1039.0
 scale = Vector2(0.084, 0.084)
 theme = ExtResource("1_vgv23")
-icon = ExtResource("6_mxfrf")
+icon = ExtResource("6_awn67")
 icon_alignment = 1
 
 [node name="SubmitJoin" type="Button" parent="."]
@@ -66,4 +66,5 @@ text = "Join"
 
 [connection signal="text_submitted" from="JoinInput" to="." method="_on_join_input_text_submitted"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="PasteJoinCode" to="." method="_on_paste_join_code_pressed"]
 [connection signal="pressed" from="SubmitJoin" to="." method="_on_submit_join_pressed"]
