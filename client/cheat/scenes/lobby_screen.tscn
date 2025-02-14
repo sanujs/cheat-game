@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://c3vdu0f81n6pn"]
+[gd_scene load_steps=7 format=3 uid="uid://c3vdu0f81n6pn"]
 
-[ext_resource type="PackedScene" uid="uid://b05vf676xxuke" path="res://scenes/background.tscn" id="1_urnum"]
+[ext_resource type="Script" path="res://lobby_screen.gd" id="1_f8q0q"]
+[ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://themes/main_theme.tres" id="2_5t3m2"]
+[ext_resource type="Texture2D" uid="uid://bs4i73cdnq0gi" path="res://assets/copy_icon_white.svg" id="4_ql501"]
+[ext_resource type="Theme" uid="uid://b1rxna748pd04" path="res://themes/icon_button.tres" id="5_eldui"]
+[ext_resource type="Texture2D" uid="uid://bagjtqkqm0rpy" path="res://assets/back_arrow.svg" id="6_hym2j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcbds"]
+bg_color = Color(0.152941, 0.152941, 0.152941, 0.517647)
 
 [node name="LobbyScreen" type="Control"]
 layout_mode = 3
@@ -9,6 +16,90 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_f8q0q")
 
-[node name="Background" parent="." instance=ExtResource("1_urnum")]
+[node name="PlayerList" type="ItemList" parent="."]
 layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = -177.0
+offset_right = 461.0
+offset_bottom = 145.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_5t3m2")
+item_count = 5
+item_0/text = "Waiting..."
+item_0/selectable = false
+item_0/disabled = true
+item_1/text = "Waiting..."
+item_1/selectable = false
+item_1/disabled = true
+item_2/text = "Waiting..."
+item_2/selectable = false
+item_2/disabled = true
+item_3/text = "Waiting..."
+item_3/selectable = false
+item_3/disabled = true
+item_4/text = "Waiting..."
+item_4/selectable = false
+item_4/disabled = true
+
+[node name="JoinCode" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -169.5
+offset_top = 92.0
+offset_right = 59.5
+offset_bottom = 150.0
+grow_horizontal = 2
+theme = ExtResource("2_5t3m2")
+text = "Join code: "
+
+[node name="CopyJoinCode" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1196.0
+offset_top = 98.0
+offset_right = 1652.0
+offset_bottom = 618.0
+scale = Vector2(0.084, 0.084)
+theme = ExtResource("2_5t3m2")
+icon = ExtResource("4_ql501")
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 92.0
+offset_right = 516.0
+offset_bottom = 492.0
+scale = Vector2(0.185, 0.185)
+theme = ExtResource("5_eldui")
+icon = ExtResource("6_hym2j")
+icon_alignment = 1
+
+[node name="Start" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -89.0
+offset_top = -172.0
+offset_right = 90.0
+offset_bottom = -90.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_5t3m2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_lcbds")
+text = "Start"
+
+[connection signal="pressed" from="CopyJoinCode" to="." method="_on_copy_join_code_pressed"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]

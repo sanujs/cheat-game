@@ -1,8 +1,9 @@
 class_name WebSocketClient
+
 extends Node
 
 @export var websocket_url = "wss://cheat-server.sudokusos.com"
-#@export var websocket_url = "wss://localhost:8001/"
+#@export var websocket_url = "ws://localhost:8001/"
 
 var socket = WebSocketPeer.new()
 var connected = false
@@ -32,13 +33,13 @@ func _process(delta: float) -> void:
 		#var code = socket.get_close_code()
 		#var reason = socket.get_close_reason()
 		#print("WebSocket closed with code: %d, reason %s. Clean: %s" % [code, reason, code != -1])
-		#set_process(false) # Stop processing.
+		#disconnect_from_server()
 	else:
 		print(state)
 
 func send(data: Variant) -> int:
 	while socket.get_ready_state() == WebSocketPeer.STATE_CONNECTING:
-		await get_tree().create_timer(2).timeout
+		await get_tree().create_timer(1).timeout
 	return socket.send_text(JSON.stringify(data))
 	
 func connect_to_server() -> void:
@@ -46,8 +47,11 @@ func connect_to_server() -> void:
 	print(err)
 	if err != OK:
 		print("Unable to connect")
-		set_process(false)
+		disconnect_from_server()
 	else:
 		connected = true
-		# Wait for the socket to connect.
-		await get_tree().create_timer(5).timeout
+
+func disconnect_from_server() -> void:
+	socket.close()
+	set_process(false)
+	print("Disconnected from server")

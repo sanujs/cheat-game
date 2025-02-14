@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://w0rry21wctdo"]
+[gd_scene load_steps=7 format=3 uid="uid://w0rry21wctdo"]
 
 [ext_resource type="Script" path="res://scenes/join_screen.gd" id="1_lh0o5"]
 [ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://themes/main_theme.tres" id="1_vgv23"]
-[ext_resource type="PackedScene" uid="uid://b05vf676xxuke" path="res://scenes/background.tscn" id="2_msaxu"]
 [ext_resource type="Texture2D" uid="uid://bagjtqkqm0rpy" path="res://assets/back_arrow.svg" id="2_ok7s5"]
 [ext_resource type="Theme" uid="uid://b1rxna748pd04" path="res://themes/icon_button.tres" id="3_huyin"]
 [ext_resource type="Texture2D" uid="uid://1tvnv2o8m6uu" path="res://assets/paste.svg" id="6_awn67"]
@@ -18,10 +17,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lh0o5")
-
-[node name="Background" parent="." instance=ExtResource("2_msaxu")]
-layout_mode = 1
-metadata/_edit_lock_ = true
 
 [node name="JoinInput" type="LineEdit" parent="."]
 layout_mode = 0

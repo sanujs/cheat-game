@@ -5,6 +5,7 @@ extends Control
 
 func submit() -> void:
 	Globals.join_code = join_input.get_text().strip_edges()
+	get_tree().change_scene_to_file("res://scenes/lobby_screen.tscn")
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/title_screen.tscn")

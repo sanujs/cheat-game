@@ -17,6 +17,8 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 [autoload]
 
 Globals="*res://globals.gd"
+Background="*res://scenes/background.tscn"
+WebSocket="*res://websocket_client.gd"
 
 [display]
 

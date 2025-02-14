@@ -7,10 +7,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="BackgroundColor" type="ColorRect" parent="."]
 show_behind_parent = true
+layout_mode = 0
 offset_right = 1981.0
 offset_bottom = 1080.0
 mouse_filter = 2
 color = Color(0.318375, 0.0276087, 0.0695862, 1)
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -49.5
+offset_top = -23.0
+offset_right = 49.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "Version 0.2.0"
