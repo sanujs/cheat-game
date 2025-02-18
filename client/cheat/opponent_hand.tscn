@@ -4,5 +4,5 @@
 
 [node name="OpponentHand" type="Node2D"]
 position = Vector2(480, 148)
-scale = Vector2(0.115, 0.115)
+scale = Vector2(0.2, 0.2)
 script = ExtResource("1_gmhvg")
