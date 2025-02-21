@@ -16,11 +16,12 @@ func _ready() -> void:
 	WebSocket.connect_to_server()
 	await get_tree().create_timer(5).timeout
 	WebSocket.send(data)
-	
 	WebSocket.message_received.connect(_on_message_received)
+
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
+
 
 func _on_message_received(json_recv: Dictionary) -> void:
 	print(json_recv)
@@ -35,12 +36,14 @@ func _on_message_received(json_recv: Dictionary) -> void:
 			for i in range(Globals.player_uuids.size()):
 				playerList.set_item_text(i, Globals.player_uuids[i])
 		"start":
+			# Server broadcasted start to all players
 			var data = {"type": "start"}
 			WebSocket.send(data)
-			print("Game has been started")
+			get_tree().change_scene_to_file("res://main.tscn")
 
 
 func _on_start_pressed() -> void:
+	# Trigger server broadcast to start game to all players
 	var data = {"type": "start"}
 	WebSocket.send(data)
 

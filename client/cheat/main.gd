@@ -1,13 +1,7 @@
 extends Node
 
 @export var card_scene: PackedScene
-@onready var client: WebSocketClient = $WebSocketClient
 @onready var hand: Hand = $PlayUI/Hand
-@onready var startGameBtn = $LobbyUI/StartGame
-@onready var newGameBtn = $LandingPage/NewGame
-@onready var joinGameBtn = $LandingPage/JoinGame
-@onready var joinCodeLbl = $LobbyUI/JoinCode
-@onready var playerList = $LobbyUI/PlayerList
 @onready var rankOption = $PlayUI/RankOption
 @onready var yourTurnLbl = $PlayUI/YourTurn
 @onready var roundRankLbl = $PlayUI/RoundRank
@@ -20,26 +14,36 @@ extends Node
 @onready var playerUI = $PlayerUI
 
 var connected = false
-var uuid = ""
-var join_key = ""
 var your_turn = false
 var round_rank: Card.Rank
 var round_start = true
-var player_uuids = []
 var players = {}
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	gameOverLbl.visible = false
-	$PlayUI.visible = false
-	$LobbyUI.visible = false
-	$PlayerUI.visible = false
-	$LandingPage.visible = true
 	rankOption.visible = false
 	yourTurnLbl.visible = your_turn
+	WebSocket.message_received.connect(_on_web_socket_client_message_received)
 	for rank in Card.Rank.keys():
 		rankOption.add_item(rank)
+
+	var playerNodes: Array = $PlayerUI.get_children()
+	var my_index = Globals.player_uuids.find(Globals.uuid)
+
+	# Rearrange player list around current player
+	for i in Globals.player_uuids.size():
+		var new_index
+		if i >= my_index:
+			new_index = i-my_index
+		else:
+			new_index = i+(Globals.player_uuids.size()-my_index)
+		playerNodes[new_index].set_player_name(Globals.player_uuids[i])
+		players[Globals.player_uuids[i]] = playerNodes[new_index]
+		playerNodes[new_index].visible = true
+	print(players)
+	round_start = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -48,78 +52,12 @@ func _process(delta: float) -> void:
 		yourTurnLbl.visible = your_turn
 
 
-func _on_new_game_pressed() -> void:
-	$LandingPage.visible = false
-	client.connect_to_server()
-
-	connected = true
-
-	# Send data.
-	var data = {"type": "init"}
-	$LobbyUI.visible = true
-	var send_data = await client.send(data)
-	print(send_data)
-
-
-func _on_join_game_text_submitted(new_text: String) -> void:
-	$LandingPage.visible = false
-	client.connect_to_server()
-
-	connected = true
-
-	# Send data.
-	var data = {"type": "init", "join": new_text}
-	client.send(data)
-	startGameBtn.disabled = true
-	$LobbyUI.visible = true
-
-
-func _on_start_game_pressed() -> void:
-	var data = {"type": "start"}
-	client.send(data)
-	startGameBtn.visible = false
-
-
 func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 	print(json_recv)
 	match json_recv["type"]:
-		"init":
-			uuid = json_recv["uuid"]
-			uuidLbl.set_text(uuid)
-			join_key = json_recv["join"]
-			joinCodeLbl.set_text("Join Code: " + join_key)
-			print(uuid)
-		"start":
-			var data = {"type": "start"}
-			client.send(data)
-			var playerNodes: Array = $PlayerUI.get_children()
-			var my_index = player_uuids.find(uuid)
-
-			# Rearrange player list around current player
-			for i in player_uuids.size():
-				var new_index
-				if i >= my_index:
-					new_index = i-my_index
-				else:
-					new_index = i+(player_uuids.size()-my_index)
-				playerNodes[new_index].set_player_name(player_uuids[i])
-				players[player_uuids[i]] = playerNodes[new_index]
-				playerNodes[new_index].visible = true
-			print(players)
-			$LobbyUI.visible = false
-			$PlayUI.visible = true
-			$PlayerUI.visible = true
-			round_start = true
-			gameOverLbl.visible = false
-		"players":
-			# Update player list when a new player joins
-			player_uuids = json_recv["players"]
-			for i in range(player_uuids.size()):
-				playerList.set_item_text(i, player_uuids[i])
-			playerList.visible = true
 		"setup":
 			var hand_length: int = len(json_recv["hand"])
-			for player_uuid in player_uuids:
+			for player_uuid in Globals.player_uuids:
 				players[player_uuid].set_hand_size(hand_length)
 			update_hand(json_recv["hand"])
 			discardPileLbl.set_text("Discard Pile: " + str(json_recv["discard_pile"]))
@@ -151,7 +89,7 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 			if json_recv.has("prev_player"):
 				players[json_recv["prev_player"]].add_cards(num_played_cards * -1)
 
-			if json_recv["player"] == uuid:
+			if json_recv["player"] == Globals.uuid:
 				your_turn = true
 				if round_start:
 					rankOption.visible = true
@@ -191,7 +129,7 @@ func _on_play_cards_pressed() -> void:
 		"cards": played_cards,
 		"round_rank": Card.rank_to_char(round_rank),
 	}
-	client.send(data)
+	WebSocket.send(data)
 	round_start = false
 	rankOption.visible = false
 
@@ -202,7 +140,7 @@ func _on_call_cheat_pressed() -> void:
 	var data = {
 		"type": "call_cheat"
 	}
-	client.send(data)
+	WebSocket.send(data)
 
 
 func _on_pass_pressed() -> void:
@@ -211,9 +149,4 @@ func _on_pass_pressed() -> void:
 	var data = {
 		"type": "pass"
 	}
-	client.send(data)
-
-
-func _on_copy_join_code_pressed() -> void:
-	DisplayServer.clipboard_set(join_key)
-	print("Text copied to clipboard!")
+	WebSocket.send(data)

@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bnxvoo2u66imq"]
+
+[ext_resource type="FontFile" uid="uid://qex8tcby6oor" path="res://fonts/Onest-Regular.ttf" id="1_brbea"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kh5ox"]
+
+[resource]
+Button/font_sizes/font_size = 45
+Button/fonts/font = ExtResource("1_brbea")
+Button/styles/focus = SubResource("StyleBoxEmpty_kh5ox")

@@ -27,6 +27,7 @@ offset_right = 45.0
 offset_bottom = 75.0
 text = "0"
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="PlayerHand" parent="." instance=ExtResource("3_8fpkh")]
-position = Vector2(0, 143)
+position = Vector2(0, 117)

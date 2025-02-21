@@ -5,9 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bagjtqkqm0rpy" path="res://assets/back_arrow.svg" id="2_ok7s5"]
 [ext_resource type="Theme" uid="uid://b1rxna748pd04" path="res://themes/icon_button.tres" id="3_huyin"]
 [ext_resource type="Texture2D" uid="uid://1tvnv2o8m6uu" path="res://assets/paste.svg" id="6_awn67"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ss1nt"]
-bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.729412)
+[ext_resource type="Theme" uid="uid://bnxvoo2u66imq" path="res://themes/alt_button.tres" id="6_xotkq"]
 
 [node name="JoinScreen" type="Control"]
 layout_mode = 3
@@ -45,6 +43,7 @@ offset_top = 239.0
 offset_right = 2081.0
 offset_bottom = 1039.0
 scale = Vector2(0.084, 0.084)
+tooltip_text = "Paste the join code"
 theme = ExtResource("1_vgv23")
 icon = ExtResource("6_awn67")
 icon_alignment = 1
@@ -55,8 +54,7 @@ offset_left = 892.0
 offset_top = 364.0
 offset_right = 1115.0
 offset_bottom = 422.0
-theme = ExtResource("1_vgv23")
-theme_override_styles/normal = SubResource("StyleBoxFlat_ss1nt")
+theme = ExtResource("6_xotkq")
 text = "Join"
 
 [connection signal="text_submitted" from="JoinInput" to="." method="_on_join_input_text_submitted"]
