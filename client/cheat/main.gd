@@ -10,6 +10,7 @@ extends Node
 @onready var discardPileLbl = $PlayUI/DiscardPileLbl
 @onready var outPileLbl = $PlayUI/OutPileLbl
 @onready var gameOverLbl = $PlayUI/GameOverLbl
+@onready var gameOver = $GameOver
 @onready var uuidLbl = $PlayUI/UUIDLbl
 @onready var playerUI = $PlayerUI
 
@@ -22,7 +23,7 @@ var players = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	gameOverLbl.visible = false
+	gameOver.visible = false
 	rankOption.visible = false
 	yourTurnLbl.visible = your_turn
 	WebSocket.message_received.connect(_on_web_socket_client_message_received)
@@ -99,9 +100,8 @@ func _on_web_socket_client_message_received(json_recv: Dictionary) -> void:
 			if json_recv.has("out_pile"):
 				outPileLbl.set_text("Out Pile: " + str(json_recv["out_pile"]))
 		"end":
-			gameOverLbl.set_text("Game Over!\nWinner is " + json_recv["winner"])
-			#print("Winner is " + json_recv["winner"])
-			gameOverLbl.visible = true
+			gameOver.set_outcome(json_recv["winner"] == Globals.uuid)
+			gameOver.visible = true
 
 
 func update_hand(new_hand: Array) -> void:

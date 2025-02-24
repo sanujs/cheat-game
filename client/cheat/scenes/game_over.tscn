@@ -1,0 +1,122 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8ifyfm5bdswf"]
+
+[ext_resource type="Script" path="res://scenes/game_over.gd" id="1_dkfog"]
+[ext_resource type="Theme" uid="uid://bnxvoo2u66imq" path="res://themes/alt_button.tres" id="1_sl8rp"]
+[ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://themes/main_theme.tres" id="2_gqe0n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5gg1"]
+bg_color = Color(0.136826, 0.136826, 0.136826, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dkfog")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -990.0
+offset_top = -540.0
+offset_right = 990.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.190762, 0.190762, 0.190762, 0.509804)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -410.5
+offset_top = -413.5
+offset_right = 410.5
+offset_bottom = 413.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_v5gg1")
+
+[node name="PlayAgain" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -325.5
+offset_top = -144.0
+offset_right = -37.5
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_sl8rp")
+text = "Play Again"
+
+[node name="Exit" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 40.5
+offset_top = -143.0
+offset_right = 323.5
+offset_bottom = -62.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_sl8rp")
+text = "Exit to lobby"
+
+[node name="GameOverLbl" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -229.0
+offset_top = 94.5
+offset_right = 229.0
+offset_bottom = 197.5
+grow_horizontal = 2
+theme = ExtResource("2_gqe0n")
+theme_type_variation = &"HeaderLarge"
+text = "GAME OVER"
+
+[node name="OutcomeLbl" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_gqe0n")
+text = "Oh boy you stink!"
+
+[connection signal="pressed" from="Panel/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="Panel/Exit" to="." method="_on_exit_pressed"]

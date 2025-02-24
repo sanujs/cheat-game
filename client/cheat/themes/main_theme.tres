@@ -11,6 +11,7 @@ Button/font_sizes/font_size = 45
 Button/fonts/font = ExtResource("1_45wap")
 Button/styles/focus = SubResource("StyleBoxEmpty_kh5ox")
 Button/styles/normal = SubResource("StyleBoxEmpty_362es")
+HeaderLarge/font_sizes/font_size = 80
 ItemList/font_sizes/font_size = 45
 ItemList/fonts/font = ExtResource("1_45wap")
 Label/font_sizes/font_size = 45

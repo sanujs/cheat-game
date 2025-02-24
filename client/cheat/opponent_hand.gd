@@ -34,6 +34,7 @@ func reposition_cards():
 		card.set_rotation(deg_to_rad(current_angle))
 		current_angle += 1
 		x_position += card_spread
+		@warning_ignore("integer_division")
 		if i < cards.size()/2:
 			y_position -= 2
 		else:

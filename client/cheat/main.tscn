@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://ovopyiqkw5oi"]
+[gd_scene load_steps=9 format=3 uid="uid://ovopyiqkw5oi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_2vsyr"]
 [ext_resource type="PackedScene" uid="uid://ci06c270f0q8a" path="res://scenes/card/card.tscn" id="2_hmpoj"]
 [ext_resource type="PackedScene" uid="uid://b05vf676xxuke" path="res://scenes/background.tscn" id="3_k1byx"]
 [ext_resource type="PackedScene" uid="uid://douyuut5kwh04" path="res://scenes/player.tscn" id="4_3ra02"]
 [ext_resource type="Theme" uid="uid://bnxvoo2u66imq" path="res://themes/alt_button.tres" id="6_873a5"]
+[ext_resource type="PackedScene" uid="uid://b8ifyfm5bdswf" path="res://scenes/game_over.tscn" id="8_beq7f"]
 [ext_resource type="PackedScene" uid="uid://n8vfd3ncsak" path="res://scenes/hand.tscn" id="10_0rnff"]
 [ext_resource type="PackedScene" uid="uid://da5eoaiiebcqk" path="res://scenes/pile.tscn" id="11_417f3"]
 
@@ -14,7 +15,154 @@ card_scene = ExtResource("2_hmpoj")
 
 [node name="Background" parent="." instance=ExtResource("3_k1byx")]
 
-[node name="PlayerUI" type="CanvasLayer" parent="."]
+[node name="PlayUI" type="Node2D" parent="."]
+
+[node name="RankOption" type="OptionButton" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 97.0
+offset_top = 647.0
+offset_right = 484.0
+offset_bottom = 705.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hand" parent="PlayUI" instance=ExtResource("10_0rnff")]
+position = Vector2(990, 2800)
+
+[node name="PlayCards" type="Button" parent="PlayUI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 998.0
+offset_top = 945.0
+offset_right = 1264.0
+offset_bottom = 1030.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("6_873a5")
+text = "Play Cards"
+
+[node name="Pass" type="Button" parent="PlayUI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 799.0
+offset_top = 944.0
+offset_right = 958.0
+offset_bottom = 1030.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("6_873a5")
+text = "Pass
+"
+
+[node name="CallCheat" type="Button" parent="PlayUI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 602.0
+offset_top = 955.0
+offset_right = 752.0
+offset_bottom = 1030.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Call Cheat"
+
+[node name="YourTurn" type="Label" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 365.0
+offset_top = 184.0
+offset_right = 570.0
+offset_bottom = 271.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "It's your turn!!"
+
+[node name="RoundRank" type="Label" parent="PlayUI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 939.0
+offset_right = 1041.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Round Rank: "
+
+[node name="ActivePileLbl" type="Label" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 1055.0
+offset_top = 402.0
+offset_right = 1152.0
+offset_bottom = 425.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Active Pile: 0"
+
+[node name="DiscardPileLbl" type="Label" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 1053.0
+offset_top = 454.5
+offset_right = 1161.0
+offset_bottom = 477.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Discard Pile: 0"
+
+[node name="OutPileLbl" type="Label" parent="PlayUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 1057.0
+offset_top = 428.0
+offset_right = 1154.0
+offset_bottom = 451.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Out Pile: 0"
+
+[node name="UUIDLbl" type="Label" parent="PlayUI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1939.0
+offset_right = 1980.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "UUID"
+horizontal_alignment = 2
+
+[node name="ActivePile" parent="PlayUI" instance=ExtResource("11_417f3")]
+position = Vector2(921, 346)
+
+[node name="PlayerUI" type="Node2D" parent="."]
 
 [node name="Player" parent="PlayerUI" instance=ExtResource("4_3ra02")]
 visible = false
@@ -36,169 +184,7 @@ position = Vector2(1350, 218)
 visible = false
 position = Vector2(1579, 541)
 
-[node name="PlayUI" type="CanvasLayer" parent="."]
-
-[node name="RankOption" type="OptionButton" parent="PlayUI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -893.0
-offset_top = 107.0
-offset_right = -506.0
-offset_bottom = 165.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Hand" parent="PlayUI" instance=ExtResource("10_0rnff")]
-position = Vector2(990, 2800)
-
-[node name="PlayCards" type="Button" parent="PlayUI"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = -135.0
-offset_right = 274.0
-offset_bottom = -50.0
-grow_horizontal = 2
-grow_vertical = 0
-theme = ExtResource("6_873a5")
-text = "Play Cards"
-
-[node name="Pass" type="Button" parent="PlayUI"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -191.0
-offset_top = -136.0
-offset_right = -32.0
-offset_bottom = -50.0
-grow_horizontal = 2
-grow_vertical = 0
-theme = ExtResource("6_873a5")
-text = "Pass
-"
-
-[node name="CallCheat" type="Button" parent="PlayUI"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -388.0
-offset_top = -125.0
-offset_right = -238.0
-offset_bottom = -50.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "Call Cheat"
-
-[node name="YourTurn" type="Label" parent="PlayUI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -625.0
-offset_top = -356.0
-offset_right = -420.0
-offset_bottom = -269.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 30
-text = "It's your turn!!"
-
-[node name="RoundRank" type="Label" parent="PlayUI"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -51.0
-offset_right = 51.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "Round Rank: "
-
-[node name="ActivePileLbl" type="Label" parent="PlayUI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 65.0
-offset_top = -138.0
-offset_right = 162.0
-offset_bottom = -115.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-text = "Active Pile: 0"
-
-[node name="DiscardPileLbl" type="Label" parent="PlayUI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 63.0
-offset_top = -85.5
-offset_right = 171.0
-offset_bottom = -62.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-text = "Discard Pile: 0"
-
-[node name="OutPileLbl" type="Label" parent="PlayUI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 67.0
-offset_top = -112.0
-offset_right = 164.0
-offset_bottom = -89.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-text = "Out Pile: 0"
-
-[node name="GameOverLbl" type="Label" parent="PlayUI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -549.0
-offset_top = -414.0
-offset_right = 523.0
-offset_bottom = -273.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.3241, 0.258944, 1)
-theme_override_font_sizes/font_size = 50
-text = "Game Over!!!
-Winner is "
-horizontal_alignment = 1
-
-[node name="UUIDLbl" type="Label" parent="PlayUI"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -41.0
-offset_bottom = 23.0
-grow_horizontal = 0
-text = "UUID"
-horizontal_alignment = 2
-
-[node name="ActivePile" parent="PlayUI" instance=ExtResource("11_417f3")]
-position = Vector2(921, 346)
+[node name="GameOver" parent="." instance=ExtResource("8_beq7f")]
 
 [connection signal="pressed" from="PlayUI/PlayCards" to="." method="_on_play_cards_pressed"]
 [connection signal="pressed" from="PlayUI/Pass" to="." method="_on_pass_pressed"]
