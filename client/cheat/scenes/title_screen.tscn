@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6ncoaqxokmpx"]
+[gd_scene load_steps=7 format=3 uid="uid://c6ncoaqxokmpx"]
 
 [ext_resource type="Script" path="res://title_screen.gd" id="1_y7o3b"]
 [ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://themes/main_theme.tres" id="2_0ngnq"]
 [ext_resource type="FontFile" uid="uid://d017b5exh2gi0" path="res://fonts/Quicksand-SemiBold.ttf" id="3_q8i5a"]
 [ext_resource type="PackedScene" uid="uid://n8vfd3ncsak" path="res://scenes/hand.tscn" id="4_a02u5"]
 [ext_resource type="PackedScene" uid="uid://ci06c270f0q8a" path="res://scenes/card/card.tscn" id="5_qowsr"]
+[ext_resource type="PackedScene" uid="uid://dt2m3l3v2j5ky" path="res://scenes/main_player.tscn" id="6_5v5ci"]
 
 [node name="TitleScreen" type="Control"]
 layout_mode = 3
@@ -33,6 +34,12 @@ theme = ExtResource("2_0ngnq")
 text = "Join Lobby"
 alignment = 0
 
+[node name="Customize" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_0ngnq")
+text = "Customize"
+alignment = 0
+
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
 offset_left = 114.0
@@ -46,5 +53,9 @@ text = "Sham"
 [node name="Hand" parent="." instance=ExtResource("4_a02u5")]
 position = Vector2(1185, 2446)
 
+[node name="MainPlayer" parent="." instance=ExtResource("6_5v5ci")]
+position = Vector2(1183, 659)
+
 [connection signal="pressed" from="VBoxContainer/Create" to="." method="_on_create_pressed"]
 [connection signal="pressed" from="VBoxContainer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="VBoxContainer/Customize" to="." method="_on_customize_pressed"]

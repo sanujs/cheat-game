@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://dt2m3l3v2j5ky"]
+
+[ext_resource type="Script" path="res://main_player.gd" id="1_ilc0a"]
+[ext_resource type="Texture2D" uid="uid://ba6x81hfh1gnm" path="res://assets/avatar-1.svg" id="2_8oy4r"]
+[ext_resource type="Theme" uid="uid://d1fhtyedr8xvc" path="res://themes/main_theme.tres" id="3_hqjfr"]
+[ext_resource type="Theme" uid="uid://bnxvoo2u66imq" path="res://themes/alt_button.tres" id="4_s863v"]
+
+[node name="MainPlayer" type="Node2D"]
+script = ExtResource("1_ilc0a")
+
+[node name="Avatar" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_8oy4r")
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -210.0
+offset_top = 71.0
+offset_right = 210.0
+offset_bottom = 129.0
+theme = ExtResource("3_hqjfr")
+text = "Player"
+horizontal_alignment = 1
+
+[node name="Edit" type="Node2D" parent="."]
+visible = false
+
+[node name="ChangeName" type="LineEdit" parent="Edit"]
+offset_left = -210.0
+offset_top = 70.0
+offset_right = 210.0
+offset_bottom = 136.0
+theme = ExtResource("3_hqjfr")
+
+[node name="EditButton" type="Button" parent="Edit"]
+offset_left = -46.0
+offset_top = 150.0
+offset_right = 43.0
+offset_bottom = 216.0
+theme = ExtResource("4_s863v")
+text = "Edit"
+
+[connection signal="text_submitted" from="Edit/ChangeName" to="." method="_on_change_name_text_submitted"]

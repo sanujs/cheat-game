@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bumisg0sbf3xk"]
+
+[ext_resource type="Script" path="res://scenes/customize.gd" id="1_484td"]
+[ext_resource type="Theme" uid="uid://b1rxna748pd04" path="res://themes/icon_button.tres" id="1_lw81a"]
+[ext_resource type="Texture2D" uid="uid://bagjtqkqm0rpy" path="res://assets/back_arrow.svg" id="2_lsyf6"]
+[ext_resource type="PackedScene" uid="uid://dt2m3l3v2j5ky" path="res://scenes/main_player.tscn" id="3_qo76m"]
+
+[node name="Customize" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_484td")
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 92.0
+offset_right = 516.0
+offset_bottom = 492.0
+scale = Vector2(0.185, 0.185)
+theme = ExtResource("1_lw81a")
+icon = ExtResource("2_lsyf6")
+icon_alignment = 1
+
+[node name="MainPlayer" parent="." instance=ExtResource("3_qo76m")]
+position = Vector2(990, 388)
+scale = Vector2(2, 2)
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

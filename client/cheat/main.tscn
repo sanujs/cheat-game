@@ -185,6 +185,7 @@ visible = false
 position = Vector2(1579, 541)
 
 [node name="GameOver" parent="." instance=ExtResource("8_beq7f")]
+visible = false
 
 [connection signal="pressed" from="PlayUI/PlayCards" to="." method="_on_play_cards_pressed"]
 [connection signal="pressed" from="PlayUI/Pass" to="." method="_on_pass_pressed"]

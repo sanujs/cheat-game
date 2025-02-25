@@ -26,3 +26,7 @@ func _on_join_pressed() -> void:
 
 func _on_create_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/lobby_screen.tscn")
+
+
+func _on_customize_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/customize.tscn")
